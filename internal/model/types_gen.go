@@ -54,3 +54,36 @@ var CommitFields = []string{"id", "commit_id", "repository", "created_at"}
 
 // CommitPrimaryFields are the primary key fields in the DB table
 var CommitPrimaryFields = []string{"id"}
+
+// CommitOutput generated for db table `commit_output`
+type CommitOutput struct {
+	// Id
+	ID int64 `db:"id" json:"id"`
+
+	// Commit id
+	CommitID int64 `db:"commit_id" json:"commit_id"`
+
+	// Created with
+	CreatedWith string `db:"created_with" json:"created_with"`
+
+	// Filename
+	Filename string `db:"filename" json:"filename"`
+
+	// Contents
+	Contents string `db:"contents" json:"contents"`
+
+	// Created at
+	CreatedAt *time.Time `db:"created_at" json:"created_at"`
+}
+
+// SetCreatedAt sets CreatedAt which requires a *time.Time
+func (c *CommitOutput) SetCreatedAt(stamp time.Time) { c.CreatedAt = &stamp }
+
+// CommitOutputTable is the name of the table in the DB
+const CommitOutputTable = "`commit_output`"
+
+// CommitOutputFields are all the field names in the DB table
+var CommitOutputFields = []string{"id", "commit_id", "created_with", "filename", "contents", "created_at"}
+
+// CommitOutputPrimaryFields are the primary key fields in the DB table
+var CommitOutputPrimaryFields = []string{"id"}

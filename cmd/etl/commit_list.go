@@ -6,14 +6,13 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/titpetric/etl/internal/repository"
 )
 
 // commitList retrieves and prints the last 10 commits from the database.
-func commitList(ctx context.Context) error {
-	db, err := sqlx.Open("sqlite3", dbDSN)
+func commitList(ctx context.Context, command *Command) error {
+	db, err := sqlx.Open("sqlite3", config.GetDSN())
 	if err != nil {
 		return err
 	}

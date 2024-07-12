@@ -10,14 +10,13 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
 
 	. "github.com/titpetric/etl/internal/model"
 	"github.com/titpetric/etl/internal/repository"
 )
 
 // commitCreate reads commits from stdin and inserts them into the database.
-func commitCreate(ctx context.Context) error {
+func commitCreate(ctx context.Context, command *Command) error {
 	// Read from stdin
 	input, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
@@ -29,7 +28,7 @@ func commitCreate(ctx context.Context) error {
 		return err
 	}
 
-	db, err := sqlx.Open("sqlite3", dbDSN+"?parseTime=true")
+	db, err := sqlx.Open("sqlite3", config.GetDSN())
 	if err != nil {
 		return err
 	}

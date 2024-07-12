@@ -10,6 +10,8 @@ import (
 	"syscall"
 
 	"github.com/spf13/pflag"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Command struct {
@@ -18,10 +20,20 @@ type Command struct {
 	Args   []string
 }
 
-var dbDSN string
+type Config struct {
+	DSN    string
+	Folder string
+}
+
+func (c *Config) GetDSN() string {
+	return c.DSN + "?parseTime=true"
+}
+
+var config = &Config{}
 
 func main() {
-	pflag.StringVar(&dbDSN, "db-dsn", "file:etl.db", "Database DSN")
+	pflag.StringVar(&config.DSN, "db-dsn", "file:etl.db", "Database DSN")
+	pflag.StringVarP(&config.Folder, "folder", "f", "output", "Folder with outputs")
 	pflag.Parse()
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -43,10 +55,15 @@ func start(ctx context.Context) error {
 		Args:   os.Args[3:],
 	}
 
-	index := map[string]map[string]func(context.Context) error{
+	index := map[string]map[string]func(context.Context, *Command) error{
 		"commit": {
 			"create": commitCreate,
 			"list":   commitList,
+		},
+		"output": {
+			"list":    outputList,
+			"save":    outputSave,
+			"restore": outputRestore,
 		},
 	}
 
@@ -60,7 +77,5 @@ func start(ctx context.Context) error {
 		return fmt.Errorf("unknown subcommand: %s", command.SubKey)
 	}
 
-	dbDSN = dbDSN + "?parseTime=true"
-
-	return action(ctx)
+	return action(ctx, &command)
 }
