@@ -59,6 +59,7 @@ func start(ctx context.Context) error {
 		"commit": {
 			"create": commitCreate,
 			"list":   commitList,
+			"get":    commitGet,
 		},
 		"output": {
 			"list":    outputList,
