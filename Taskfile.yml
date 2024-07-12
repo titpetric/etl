@@ -1,0 +1,34 @@
+---
+version: "3"
+
+vars:
+  repository: '{{.repository | default "git@github.com:TykTechnologies/tyk.git" }}'
+  database: '{{.database | default "file:etl.db" }}'
+
+tasks:
+  default:
+    cmds:
+      - task: generate
+      - task: ingest
+
+  generate:
+    cmds:
+      - task: generate:model
+
+  generate:model:
+    vars:
+      args: --db-driver sqlite --db-dsn {{.database}}
+    cmds:
+      - rm -f etl.db
+      - mig migrate {{.args}} --migrate-path internal/migrations --project sqlite --apply --verbose
+      - mig gen {{.args}} --lang=go --go.fill-json --schema=model --output internal/model
+      - go install ./cmd/...
+
+  ingest:
+    cmds:
+      - task ingest:git-repo | etl commit create
+
+  ingest:git-repo:
+    dir: ingest-git-repo
+    cmds:
+      - task repository={{.repository}}

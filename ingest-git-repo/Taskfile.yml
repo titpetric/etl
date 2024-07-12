@@ -1,0 +1,25 @@
+---
+version: "3"
+
+tasks:
+  default:
+    requires:
+      vars: [repository]
+    cmds:
+      - task: commits:checkout
+      - task: commits:list
+
+  commits:checkout:
+    status:
+      - test -d src/.git
+    cmds:
+      - git clone {{.repository}} src
+      - mkdir -p output/
+      - touch output/.placeholder
+
+  commits:list:
+    dir: src
+    cmds:
+      - git pull -q
+      - |-
+          git log -n 10 --pretty=format:"%H" | jq -R . | jq -s 'map({commit_id: ., repository: "{{.repository}}"})' -r
