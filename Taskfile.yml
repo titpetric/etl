@@ -1,6 +1,15 @@
 ---
 version: "3"
 
+includes:
+  git: Taskfile.git.yml
+  ingest-git-repo:
+    taskfile: ingest-git-repo/Taskfile.yml
+    dir: ./
+  schema-gen:
+    taskfile: schema-gen/Taskfile.yml
+    dir: ./
+
 vars:
   repository: '{{.repository | default "git@github.com:TykTechnologies/tyk.git" }}'
   database: '{{.database | default "file:etl.db" }}'
@@ -19,16 +28,18 @@ tasks:
     vars:
       args: --db-driver sqlite --db-dsn {{.database}}
     cmds:
-      - rm -f etl.db
       - mig migrate {{.args}} --migrate-path internal/migrations --project sqlite --apply --verbose
       - mig gen {{.args}} --lang=go --go.fill-json --schema=model --output internal/model
       - go install ./cmd/...
 
   ingest:
     cmds:
-      - task ingest:git-repo | etl commit create
+      - defer:
+          task: git:reset
+      - task ingest-git-repo | etl commit create
+      # TODO: loop through ETL jobs, per commit, restore output
+      - task schema-gen
 
-  ingest:git-repo:
-    dir: ingest-git-repo
+  clean:
     cmds:
-      - task repository={{.repository}}
+      - rm -f etl.db outputs/
