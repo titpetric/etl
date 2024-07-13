@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  commit:
+    desc: "Check out a particular commit by hash"
+    requires:
+      vars: [commit]
+    cmds:
+      - echo "Checking out commit {{.commit}}"
+      - git -C src fetch origin
+      - git -C src checkout {{.commit}}
+
+  reset:
+    desc: "Reset the repository back to a clean state on master (or main)"
+    cmds:
+      - echo "Resetting the repository to a clean state on master (or main)"
+      - git -C src fetch origin
+      - git -C src checkout master || git -C src checkout main
+      - task: clean
+
+  clean:
+    desc: "Ensure the repository is clean before any other task"
+    cmds:
+      - echo "Ensuring the repository is clean"
+      - git -C src reset --hard HEAD
+      - git -C src clean -fd

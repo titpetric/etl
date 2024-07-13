@@ -1,6 +1,10 @@
 ---
 version: "3"
 
+# This task creates or updates a git repository checkout. It pulls
+# the latest changees and ensures the latest 10 commits are indexed
+# in the database by providing a list of them as JSON.
+
 tasks:
   default:
     requires:

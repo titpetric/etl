@@ -1,0 +1,19 @@
+---
+version: "3"
+
+# This tasks go-fsck and schema-gen in several data model packages.
+
+vars:
+  schemaGenFlags: --pretty-json
+
+tasks:
+  default:
+    env:
+      OUTPUT:
+        sh: 'echo $(realpath -s .)/output'
+    cmds:
+      - cd src/apidef && schema-gen extract {{.schemaGenFlags}} -o ${OUTPUT}/schema-apidef.json
+      - cd src/apidef/oas && schema-gen extract {{.schemaGenFlags}} -o ${OUTPUT}/schema-apidef-oas.json
+      - cd src/config && schema-gen extract {{.schemaGenFlags}} -o ${OUTPUT}/schema-config.json
+      - cd src/user && schema-gen extract {{.schemaGenFlags}} -o ${OUTPUT}/schema-user.json
+      - cd src/gateway && schema-gen extract {{.schemaGenFlags}} -o ${OUTPUT}/schema-gateway.json
