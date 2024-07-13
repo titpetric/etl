@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jmoiron/sqlx"
-
 	"github.com/titpetric/etl/internal/repository"
 )
 
@@ -18,13 +16,7 @@ func commitGet(ctx context.Context, command *Command) error {
 		return errors.New("usage: etl commit get <id> [options]")
 	}
 
-	db, err := sqlx.Open("sqlite3", config.GetDSN())
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	repo := repository.NewCommitRepositoryReader(db)
+	repo := repository.NewCommitRepositoryReader(command.DB)
 
 	commit, err := repo.Get(ctx, command.Args[0])
 	if err != nil {

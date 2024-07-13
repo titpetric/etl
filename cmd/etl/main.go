@@ -9,16 +9,11 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/spf13/pflag"
 
 	_ "github.com/mattn/go-sqlite3"
 )
-
-type Command struct {
-	Key    string
-	SubKey string
-	Args   []string
-}
 
 type Config struct {
 	DSN    string
@@ -54,6 +49,14 @@ func start(ctx context.Context) error {
 		SubKey: os.Args[2],
 		Args:   os.Args[3:],
 	}
+
+	db, err := sqlx.Open("sqlite3", config.GetDSN())
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	command.DB = db
 
 	index := map[string]map[string]func(context.Context, *Command) error{
 		"commit": {

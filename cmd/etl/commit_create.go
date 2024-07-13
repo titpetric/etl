@@ -9,8 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jmoiron/sqlx"
-
 	. "github.com/titpetric/etl/internal/model"
 	"github.com/titpetric/etl/internal/repository"
 )
@@ -28,16 +26,11 @@ func commitCreate(ctx context.Context, command *Command) error {
 		return err
 	}
 
-	db, err := sqlx.Open("sqlite3", config.GetDSN())
+	tx, err := command.DB.Beginx()
 	if err != nil {
 		return err
 	}
-	defer db.Close()
-
-	tx, err := db.Beginx()
-	if err != nil {
-		return err
-	}
+	defer tx.Rollback()
 
 	repo := repository.NewCommitRepository(tx)
 	count := 0
@@ -48,14 +41,13 @@ func commitCreate(ctx context.Context, command *Command) error {
 			if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 				continue // Ignore unique constraint errors
 			}
-			tx.Rollback()
 			return err
 		}
 		count++
 	}
 
 	if err := tx.Commit(); err != nil {
-		return err
+		return tx.Commit()
 	}
 
 	fmt.Printf("Commits created successfully: %d rows added\n", count)

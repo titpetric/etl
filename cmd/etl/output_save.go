@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jmoiron/sqlx"
-
 	. "github.com/titpetric/etl/internal/model"
 	"github.com/titpetric/etl/internal/repository"
 )
@@ -28,13 +26,7 @@ func outputSave(ctx context.Context, command *Command) error {
 		return err
 	}
 
-	db, err := sqlx.Open("sqlite3", config.DSN)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	repo := repository.NewOutputRepository(db)
+	repo := repository.NewOutputRepository(command.DB)
 	count, skipped := 0, 0
 
 	files, err := ioutil.ReadDir(config.Folder)
