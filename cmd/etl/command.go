@@ -15,14 +15,13 @@ type CommandHandlerFunc func(ctx context.Context, command *model.Command, r io.R
 
 func HandleCommand(ctx context.Context, command *model.Command, r io.Reader) error {
 	commandMap := map[string]CommandHandlerFunc{
-		"insert":   handlers.Insert,
-		"get":      handlers.Get,
-		"list":     handlers.List,
-		"tables":   handlers.Tables,
-		"update":   handlers.Update,
-		"query":    handlers.Query,
-		"truncate": handlers.Truncate,
-		"version":  handlers.Version,
+		"insert":  handlers.Insert,
+		"get":     handlers.Get,
+		"list":    handlers.List,
+		"tables":  handlers.Tables,
+		"update":  handlers.Update,
+		"query":   handlers.Query,
+		"version": handlers.Version,
 	}
 	commands := maps.Keys(commandMap)
 
