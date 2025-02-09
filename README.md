@@ -10,6 +10,14 @@ It supports:
 
 Check out [tests/git-tags.sh](./tests/git-tags.sh) for an usage example.
 
+## Installation
+
+```bash
+go install github.com/titpetric/etl/cmd/etl@main
+```
+
+If cloning the repository run `task` in the project root.
+
 ## Usage examples
 
 **To insert records**:
@@ -66,21 +74,21 @@ If you need proper database migrations, take a look at
 All you need to do to make the cli functional is to declare the
 following environment variables:
 
-```
+```bash
 export DB_DRIVER=sqlite
 export DB_DSN="file:git-tags.db"
 ```
 
 For MySQL you would do:
 
-```
-DB_DRIVER: mysql
-DB_DSN: "etl:etl@tcp(localhost:3306)/etl"
+```bash
+export DB_DRIVER=mysql
+export DB_DSN="etl:etl@tcp(localhost:3306)/etl"
 ```
 
 For Postgres something like:
 
-```
-DB_DRIVER: postgres
-DB_DSN: "postgres://username:password@localhost:5432/database_name"
+```bash
+export DB_DRIVER=postgres
+export DB_DSN="postgres://username:password@localhost:5432/database_name"
 ```
