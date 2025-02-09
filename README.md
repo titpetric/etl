@@ -46,6 +46,10 @@ The query file supports named parameters which are filled from arguments
 (`:column`). The query files are usually coupled to the database you're
 working with due to differences between SQL syntax.
 
+> In order to implement the correct deletion or truncation behaviour for
+> any database, a query file should be created. The cli doesn't provide
+> any `delete` or `truncate` functionality for several unstated reasons.
+
 ## Motivation
 
 I didn't find any nice tooling that would let me create and update
