@@ -1,0 +1,3 @@
+/etl
+/testdata/ingest*.json
+/testdata/*.db

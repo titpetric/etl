@@ -1,0 +1,15 @@
+---
+version: "3"
+
+env:
+  CGO_ENABLED: 0
+
+tasks:
+  default:
+    desc: "Everything"
+    cmds:
+      - goimports -w .
+      - goimports-reviser -imports-order std,general,company,project,blanked,dotted -company-prefixes github.com/titpetric/ ./...
+      - go fmt ./...
+      - go install ./cmd/...
+      - etl version
