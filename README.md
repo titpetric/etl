@@ -79,20 +79,20 @@ All you need to do to make the cli functional is to declare the
 following environment variables:
 
 ```bash
-export DB_DRIVER=sqlite
-export DB_DSN="file:git-tags.db"
+export ETL_DB_DRIVER=sqlite
+export ETL_DB_DSN="file:git-tags.db"
 ```
 
 For MySQL you would do:
 
 ```bash
-export DB_DRIVER=mysql
-export DB_DSN="etl:etl@tcp(localhost:3306)/etl"
+export ETL_DB_DRIVER=mysql
+export ETL_DB_DSN="etl:etl@tcp(localhost:3306)/etl"
 ```
 
 For Postgres something like:
 
 ```bash
-export DB_DRIVER=postgres
-export DB_DSN="postgres://username:password@localhost:5432/database_name"
+export ETL_DB_DRIVER=postgres
+export ETL_DB_DSN="postgres://username:password@localhost:5432/database_name"
 ```

@@ -1,6 +1,6 @@
 #!/bin/bash
-export DB_DRIVER=sqlite
-export DB_DSN="file:git-tags.db"
+export ETL_DB_DRIVER=sqlite
+export ETL_DB_DSN="file:git-tags.db"
 
 rm -f git-tags.db
 

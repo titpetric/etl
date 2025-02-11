@@ -29,8 +29,8 @@ func NewFlagSet(name string) *pflag.FlagSet {
 
 func (c *Config) ParseFlags() ([]string, error) {
 	flagSet := NewFlagSet("Config")
-	flagSet.StringVar(&c.DSN, "db-dsn", os.Getenv("DB_DSN"), "Database DSN")
-	flagSet.StringVar(&c.Driver, "db-driver", os.Getenv("DB_DRIVER"), "Database Driver")
+	flagSet.StringVar(&c.DSN, "db-dsn", os.Getenv("ETL_DB_DSN"), "Database DSN")
+	flagSet.StringVar(&c.Driver, "db-driver", os.Getenv("ETL_DB_DRIVER"), "Database Driver")
 	flagSet.StringVarP(&c.Folder, "folder", "f", "output", "Folder with outputs")
 	flagSet.BoolVarP(&c.Verbose, "verbose", "v", false, "Folder with outputs")
 	flagSet.BoolVarP(&c.Quiet, "quiet", "q", false, "Quiet output")
