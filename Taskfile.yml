@@ -8,8 +8,14 @@ tasks:
   default:
     desc: "Everything"
     cmds:
+      - go fmt ./...
       - goimports -w .
       - goimports-reviser -imports-order std,general,company,project,blanked,dotted -company-prefixes github.com/titpetric/ ./...
-      - go fmt ./...
       - go install ./cmd/...
       - etl version
+
+  setup:
+    desc: "Install dev tooling"
+    cmds:
+      - go install golang.org/x/tools/cmd/goimports@latest
+      - go install github.com/incu6us/goimports-reviser/v3@latest
