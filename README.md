@@ -16,7 +16,14 @@ Check out [tests/git-tags.sh](./tests/git-tags.sh) for an usage example.
 go install github.com/titpetric/etl/cmd/etl@main
 ```
 
-If cloning the repository run `task` in the project root.
+## Development
+
+Taskfile is required for the development.
+
+- `task` will run some formatting and build etl,
+- `task setup` will install or update development dependencies.
+
+Use `task -l` to discover other tasks.
 
 ## Usage examples
 
@@ -29,7 +36,17 @@ The input json is optional. Column values can be overriden as arguments.
 The passed column value supports reading in files with `json=@<file>`.
 This will set the JSON data to the column named `json` in the database.
 
-To update records, use `etl update`.
+**To update records**
+
+To update records, use `etl update`. Records get updated by some sort of
+conditions. To pass a "where" style condition, additional parameters can
+be passed to update similar to etl insert:
+
+- `cat records.json | etl update record_id`
+- `echo '{"disabled":true}' | etl update created_at=NULL`
+
+This in essence lets you bulk update records but should likely write a
+custom update query for anything other than bulk import.
 
 **To get records**:
 
@@ -45,6 +62,15 @@ column arguments are used to filter data for a `WHERE` clause.
 The query file supports named parameters which are filled from arguments
 (`:column`). The query files are usually coupled to the database you're
 working with due to differences between SQL syntax.
+
+```sql
+update github_tags set created_at=:created_at where commit_sha=:commit_sha
+```
+
+For such a query, the value for `created_at` and `commmit_sha` can be
+derived from the parameters (`etl query file.sql created_at=$(date -r) commit_sha=$(git rev-parse HEAD)`).
+This makes the formatting of the value accessible, as sometimes it needs
+to be transformed into the correct format for insertion.
 
 > In order to implement the correct deletion or truncation behaviour for
 > any database, a query file should be created. The cli doesn't provide

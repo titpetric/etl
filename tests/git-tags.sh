@@ -2,6 +2,7 @@
 export ETL_DB_DRIVER=sqlite
 export ETL_DB_DSN="file:git-tags.db"
 
+# Clear initial db from any previous runs
 rm -f git-tags.db
 
 # Create schema
@@ -24,6 +25,3 @@ etl query testdata/tags-update.sql commit_sha=3f2e1d0c9b8a7e6d5f4c3b2a created_a
 
 # Latest tags
 etl query testdata/tags-latest.sql | jq .
-
-# Truncate
-etl truncate github_tags
