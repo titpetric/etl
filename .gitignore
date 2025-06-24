@@ -1,3 +1,7 @@
 /etl
 /testdata/ingest*.json
 /testdata/*.db
+*.db
+*.cov
+*.test
+*.out

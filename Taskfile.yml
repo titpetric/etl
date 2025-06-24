@@ -14,6 +14,23 @@ tasks:
       - go install ./cmd/...
       - etl version
 
+  up:
+    deps: ['build']
+    desc: "Bring up an ETL instance for a test"
+    cmds:
+      - docker compose build
+      - docker compose up -d --wait
+
+  down:
+    desc: "Bring down the ETL instance"
+    cmds:
+      - docker compose down --remove-orphans
+
+  build:
+    desc: "Build etl binary for docker image"
+    cmds:
+      - go build ./cmd/...
+
   setup:
     desc: "Install dev tooling"
     cmds:

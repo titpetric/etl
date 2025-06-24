@@ -48,8 +48,3 @@ endpoints:
         JOIN users u ON o.user_id = u.id
         JOIN pets p ON o.pet_id = p.id
         WHERE o.id = :id
-
-  - path: "/shutdown"
-    method: "POST"
-    handler:
-      type: "shutdown"

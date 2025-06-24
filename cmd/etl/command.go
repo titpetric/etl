@@ -22,6 +22,7 @@ func HandleCommand(ctx context.Context, command *model.Command, r io.Reader) err
 		"update":  handlers.Update,
 		"query":   handlers.Query,
 		"version": handlers.Version,
+		"server":  handlers.Server,
 	}
 	commands := maps.Keys(commandMap)
 

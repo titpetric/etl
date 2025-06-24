@@ -1,0 +1,8 @@
+---
+services:
+  etl:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - $PWD/tests/petstore:/app

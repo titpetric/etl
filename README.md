@@ -8,7 +8,26 @@ It supports:
 - postgres,
 - mysql
 
-Check out [tests/git-tags.sh](./tests/git-tags.sh) for an usage example.
+It can be used as a CLI to interface with your choice of database, or it
+can be invoked as `etl server`, serving SQL-first API endpoints.
+
+## Testing
+
+Two main test suites are available:
+
+- [tests/git-tags](./tests/git-tags) demonstrates CLI usage,
+- [tests/petstore](./tests/petstore) demonstrates SQL as an API.
+
+The ETL tool along with `etl server` allows you to expose the result of
+an SQL query or multiple SQL queries as an API endpoint by providing an
+`etl.yml` with the configuration for that. See the petstore example.
+
+To run the tests:
+
+- run `task up` in the root of the project,
+- run `task` in the `tests/petstore` location.
+
+Run `task setup` to install any development tooling required.
 
 ## Installation
 
