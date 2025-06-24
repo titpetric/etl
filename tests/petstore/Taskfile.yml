@@ -1,0 +1,22 @@
+---
+version: "3"
+
+env:
+  CGO_ENABLED: 0
+
+tasks:
+  default:
+    desc: "Set up a server DB, run etl server"
+    env:
+      ETL_DB_DRIVER: sqlite
+      ETL_DB_DSN: file:petstore.db
+    cmds:
+      - rm -f petstore.db venom.log
+      - defer: rm -f venom.log
+      - etl query petstore.sql
+      - venom run petstore-test.yml
+
+  setup:
+    desc: "Install dev tooling"
+    cmds:
+      - curl -s https://github.com/ovh/venom/releases/download/v1.2.0/venom.linux-amd64 -L -o /usr/local/bin/venom && chmod +x /usr/local/bin/venom

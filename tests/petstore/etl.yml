@@ -1,0 +1,55 @@
+---
+server:
+  http: ":3000"
+
+storage:
+  dsn: "file:petstore.db"
+  driver: "sqlite"
+
+endpoints:
+  - path: "/pets"
+    handler:
+      type: "sql"
+      parameters:
+        limit: "10"
+      query: |
+        SELECT id, name, type, age, status
+        FROM pets
+        WHERE status = 'available'
+        ORDER BY name
+        LIMIT :limit
+
+  - path: "/pets/{id}"
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT id, name, type, age, status
+        FROM pets
+        WHERE id = :id
+
+  - path: "/users/{id}/orders"
+    handler:
+      type: "sql"
+      query: |
+        SELECT o.id, p.name as pet_name, o.quantity, o.order_date, o.status
+        FROM orders o
+        JOIN pets p ON o.pet_id = p.id
+        WHERE o.user_id = :id
+        ORDER BY o.order_date DESC
+
+  - path: "/orders/{id}"
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT o.id, u.username, p.name as pet_name, o.quantity, o.status, o.order_date
+        FROM orders o
+        JOIN users u ON o.user_id = u.id
+        JOIN pets p ON o.pet_id = p.id
+        WHERE o.id = :id
+
+  - path: "/shutdown"
+    method: "POST"
+    handler:
+      type: "shutdown"

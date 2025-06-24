@@ -1,0 +1,45 @@
+name: "Petstore API Tests"
+
+testcases:
+  - name: "Get pet by ID"
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:3000/pets/1
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson ShouldNotBeEmpty
+          - result.bodyjson.name ShouldEqual "Fluffy"
+          - result.bodyjson.status ShouldEqual "available"
+
+  - name: "List pets with limit"
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:3000/pets?limit=2
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson ShouldHaveLength 2
+          - result.bodyjson.bodyjson0.name ShouldEqual "Fluffy"
+
+  - name: "Get user orders"
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:3000/users/2/orders
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson ShouldHaveLength 1
+          - result.bodyjson.bodyjson0.status ShouldEqual "placed"
+          - result.bodyjson.bodyjson0.pet_name ShouldEqual "Fluffy"
+
+  - name: "Get order by ID"
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:3000/orders/1
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson ShouldNotBeEmpty
+          - result.bodyjson.username ShouldEqual "alice"
+          - result.bodyjson.pet_name ShouldEqual "Spot"
