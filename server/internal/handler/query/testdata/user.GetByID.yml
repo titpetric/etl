@@ -1,0 +1,31 @@
+---
+config:
+  service: user
+  name: GetByID
+  title: GetByID retrieves the user record and associated statistics.
+  endpoints:
+    - method: GET
+      path: /users/{id}
+    - method: POST
+      path: /api/user.GetByID
+
+inputs:
+  - name: id
+    title: A valid user ID.
+  - name: comment_limit
+    title: Limit number of comments in response
+    default: "10"
+
+response:
+  - produces: user
+    query:
+      mode: get
+      sql: select * from user where id={{inputs.id}}
+  - with: user
+    produces: groups
+    query:
+      sql: select g.id, g.name from user_group g inner join user_group_member m on (m.group_id=g.id) where m.user_id={{user.id}}
+      want: array
+  - produces: comments
+    query:
+      sql: select * from comment where user_id=? order by id desc limit 0, {{inputs.comment_limit}}
