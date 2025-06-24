@@ -93,7 +93,17 @@ func (s *Sqlite) Query(sqlQuery string, params ...string) ([]model.Record, error
 		return nil, err
 	}
 
-	rows, err := s.db.NamedQuery(sqlQuery, args)
+	if len(args) > 0 {
+		rows, err := s.db.NamedQuery(sqlQuery, args)
+		if err != nil {
+			return nil, err
+		}
+		defer rows.Close()
+
+		return internal.ScanAll(rows)
+	}
+
+	rows, err := s.db.Queryx(sqlQuery)
 	if err != nil {
 		return nil, err
 	}
