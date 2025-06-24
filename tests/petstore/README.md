@@ -1,6 +1,6 @@
 # PetStore test
 
-This test suite does the following:
+This test suite sets up an Sqlite test suite, that:
 
 - creates a `petstore.db` with data from `petstore.sql`,
 - runs ovh/venom integration test with `task`,
