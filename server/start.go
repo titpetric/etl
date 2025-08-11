@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -10,21 +11,35 @@ import (
 	"github.com/titpetric/etl/server/internal/handler"
 )
 
-// Start will load a config and start the service.
+// Start will load the config and start a HTTP server.
 func Start(ctx context.Context) error {
-	conf, err := loader.Load("etl.yml")
+	conf, err := NewConfig()
 	if err != nil {
 		return err
 	}
 
-	return StartWithConfig(ctx, conf)
+	return Server(ctx, conf)
 }
 
-// Start is the entry point for a service lifecycle.
-func StartWithConfig(ctx context.Context, conf *config.Config) error {
+// NewConfig will load the config from etl.yml.
+func NewConfig() (*config.Config, error) {
+	return loader.Load("etl.yml")
+}
+
+// NewHandler is here so it can be used in other routers.
+func NewHandler() (http.Handler, error) {
+	conf, err := NewConfig()
+	if err != nil {
+		return nil, err
+	}
+	return handler.Server(conf)
+}
+
+// Server starts a HTTP server using the provided config.
+func Server(ctx context.Context, conf *config.Config) error {
 	handler, err := handler.Server(conf)
 	if err != nil {
-		return err
+		return fmt.Errorf("error creating server handler: %w", err)
 	}
 
 	httpServer := &http.Server{
