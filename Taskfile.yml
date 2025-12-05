@@ -36,3 +36,32 @@ tasks:
     cmds:
       - go install golang.org/x/tools/cmd/goimports@latest
       - go install github.com/incu6us/goimports-reviser/v3@latest
+
+  test:
+    desc: "Format, lint, test, and build"
+    env:
+      CGO_ENABLED: 1
+    cmds:
+      - goimports -w .
+      - go fmt ./...
+      - go mod tidy
+      - go test -race ./...
+      - go build ./cmd/...
+
+  test:test-petstore:
+    desc: "Run petstore integration tests"
+    dir: tests/petstore
+    cmds:
+      - task
+
+  test:test-users:
+    desc: "Run users integration tests"
+    dir: tests/users
+    cmds:
+      - task
+
+  test:all:
+    desc: "Run all integration tests"
+    cmds:
+      - task test:test-petstore
+      - task test:test-users
