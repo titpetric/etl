@@ -16,9 +16,9 @@ A simple request will run one or more queries against the database.
 
 The data returned from the database can be used for front-end rendering.
 
-## Web development with external source
+## Web development with API
 
-![](diagrams/v1/webdev-http.svg)
+![](diagrams/v1/webdev-api.svg)
 
 ETL would allow a distributed service configuration. Service discovery
 could look up on which servers the API is accessible, and use a HTTP
