@@ -6,19 +6,19 @@ the definition.
 
 ## Simple API
 
-![](diagrams/api.svg?v1)
+![](diagrams/v1/api.svg)
 
 A simple request will run one or more queries against the database.
 
 ## Web development
 
-![](diagrams/webdev-db.svg?v1)
+![](diagrams/v1/webdev-db.svg)
 
 The data returned from the database can be used for front-end rendering.
 
 ## Web development with external source
 
-![](diagrams/webdev-http.svg?v1)
+![](diagrams/v1/webdev-http.svg)
 
 ETL would allow a distributed service configuration. Service discovery
 could look up on which servers the API is accessible, and use a HTTP

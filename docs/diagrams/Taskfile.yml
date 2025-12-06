@@ -5,3 +5,5 @@ tasks:
   default:
     cmds:
       - find . -type f -name '*.puml' | xargs -n1 plantuml -tsvg
+      - mv *.svg v1/
+
