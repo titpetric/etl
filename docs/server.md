@@ -6,20 +6,26 @@ the definition.
 
 ## Simple API
 
-![](diagrams/v1/api.svg)
+A simple request will run one or more queries against the database. The
+data of multiple select statements can be combined into a JSON API
+response.
 
-A simple request will run one or more queries against the database.
+![](diagrams/v1/api.svg)
 
 ## Web development
 
-![](diagrams/v1/webdev-db.svg)
-
 The data returned from the database can be used for front-end rendering.
+A vuego template can take the returned data and render it to HTML.
+
+![](diagrams/v1/webdev-db.svg)
 
 ## Web development with API
 
-![](diagrams/v1/webdev-api.svg)
+The APIs can be composed with external data sources. If your "user" database
+lives on a different host and isn't accessible locally due to firewall policies,
+using HTTP API calls results in:
 
-ETL would allow a distributed service configuration. Service discovery
-could look up on which servers the API is accessible, and use a HTTP
-request to fetch the JSON. This allows to consider network topology.
+- The webdev server/s not needing direct access to database (least privilege)
+- Other JSON sources could be consumed, usage of third party APIs.
+
+![](diagrams/v1/webdev-api.svg)

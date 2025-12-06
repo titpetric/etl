@@ -6,7 +6,6 @@ participant "Web Server / Router" as WebServer
 participant "Page Handler\n(/users)" as PageHandler
 participant "Service Discovery /\nAPI Gateway" as Discovery
 participant "Users API Service\n(external)" as UsersAPI
-database "SQL Database\n(for Users API Service)" as Database
 participant "Template Renderer" as Renderer
 
 Client -> WebServer : GET /users
@@ -16,8 +15,6 @@ PageHandler -> Discovery : resolve endpoint for Users API
 Discovery --> PageHandler : API endpoint URL
 
 PageHandler -> UsersAPI : GET /api/users (external request)
-UsersAPI -> Database : EXECUTE SQL
-Database --> UsersAPI : rows[]
 UsersAPI --> PageHandler : JSON { users: [...] }
 
 PageHandler -> Renderer : render(users.html, json.users)
