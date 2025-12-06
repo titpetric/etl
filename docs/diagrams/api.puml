@@ -1,0 +1,16 @@
+@startuml
+skin plantuml2
+
+actor Client
+participant "Web Server / Router" as WebServer
+participant "Users API Service\n(external)" as UsersAPI
+database "SQL Database\n(for Users API Service)" as Database
+
+Client -> WebServer : GET /api/users (proxied or routed)
+WebServer -> UsersAPI : GET /api/users
+UsersAPI -> Database : EXECUTE SQL\nSELECT id,name,email FROM users WHERE active = true
+Database --> UsersAPI : rows[]
+UsersAPI --> WebServer : JSON { users: [...] }
+WebServer --> Client : HTTP 200 JSON
+
+@enduml

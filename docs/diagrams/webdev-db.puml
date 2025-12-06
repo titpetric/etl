@@ -1,0 +1,23 @@
+@startuml
+skin plantuml2
+
+actor Client
+participant "Web Server / Router" as WebServer
+participant "Page Handler\n(/users)" as PageHandler
+participant "Local Query Layer\n(e.g. ETL, DAL)" as LocalQuery
+database "Local SQL Database" as Database
+participant "Template Renderer" as Renderer
+
+Client -> WebServer : GET /users
+WebServer -> PageHandler : route /users
+
+PageHandler -> LocalQuery : fetchUsers("users.list")
+LocalQuery -> Database : EXECUTE SQL
+Database --> LocalQuery : rows[]
+LocalQuery --> PageHandler : rows[]
+
+PageHandler -> Renderer : render(users.html, rows)
+Renderer --> PageHandler : HTML
+PageHandler --> Client : HTTP 200 HTML
+
+@enduml
