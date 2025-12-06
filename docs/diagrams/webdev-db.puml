@@ -1,5 +1,5 @@
 @startuml
-skin plantuml2
+skinparam monochrome reverse
 
 actor Client
 participant "Web Server / Router" as WebServer
