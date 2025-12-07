@@ -17,7 +17,8 @@ type CacheExpiryManager struct {
 	mu      sync.RWMutex
 	entries map[string]CacheExpiry
 	storage fs.FS
-	ttl     time.Duration
+
+	ttl time.Duration
 }
 
 // NewCacheExpiryManager creates a new CacheExpiryManager with the given TTL.
