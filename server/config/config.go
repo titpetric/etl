@@ -8,6 +8,9 @@ type Config struct {
 	// Storage configures the storage default.
 	Storage *Storage `yaml:"storage"`
 
+	// Include specifies additional config files to include and merge.
+	Include []string `yaml:"include,omitempty"`
+
 	// Endpoints contain a list of configured endpoints.
 	Endpoints []*Endpoint `yaml:"endpoints"`
 }
@@ -43,6 +46,9 @@ type Server struct {
 
 	// GrpcAddr contains the address the server should listen on. Example: ":50051".
 	GrpcAddr string `yaml:"grpc"`
+
+	// Features contains feature flags available for conditional query execution.
+	Features map[string]bool `yaml:"features"`
 }
 
 // Storage type configures database Driver and DSN values.

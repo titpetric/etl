@@ -1,7 +1,7 @@
 package config
 
 import (
-	"os"
+	"io/fs"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,10 +10,10 @@ import (
 func testConfigLoad(tb testing.TB) *Config {
 	tb.Helper()
 
-	data, err := os.ReadFile(testConfig.Path)
+	data, err := fs.ReadFile(testConfig.Storage, testConfig.Path)
 	assert.NoError(tb, err)
 
-	cfg, err := Decode(data)
+	cfg, err := Decode(testConfig.Storage, data)
 	assert.NoError(tb, err)
 	assert.NotNil(tb, cfg)
 	assert.True(tb, "/api/ping" == cfg.Endpoints[0].Path)
