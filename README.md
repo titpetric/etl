@@ -4,8 +4,10 @@
 ![Coverage](https://img.shields.io/badge/coverage-31.7%25-orange)
 [![GoDoc](https://pkg.go.dev/badge/github.com/titpetric/etl.svg)](https://pkg.go.dev/github.com/titpetric/etl)
 
-**ETL** is a no-code SQL-oriented framework enabling rapid development
-of APIs, web applications, and supports CQRS design.
+**ETL** is a no-code SQL-oriented framework.
+
+ETL enables rapid development of APIs, web applications, and supports
+CQRS design.
 
 ETL allows you to define API endpoints declaratively in YAML, execute
 parameterized SQL queries, and serve JSON APIs or render HTML
