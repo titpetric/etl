@@ -1,25 +1,27 @@
 package loader
 
-import (
-	"os"
-)
+import "io/fs"
 
 // CacheNone is a cache implementation that does not cache configuration data.
-type CacheNone struct{}
+type CacheNone struct {
+	storage fs.FS
+}
 
 // NewCacheNone creates a new CacheNone, which does not cache configuration data and reads directly from the file each time.
-func NewCacheNone() *CacheNone {
-	return &CacheNone{}
+func NewCacheNone(storage fs.FS) *CacheNone {
+	return &CacheNone{
+		storage: storage,
+	}
 }
 
 // Get reads the configuration file directly without caching.
 func (c *CacheNone) Get(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}
 
-	return Decode(data)
+	return Decode(c.storage, data)
 }
 
 // Set is a no-op for CacheNone.

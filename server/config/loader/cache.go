@@ -16,7 +16,7 @@ type internalCache interface {
 }
 
 var (
-	cache   Cache = NewCacheForeverManager()
+	cache   Cache = NewCacheForeverManager(nil)
 	cacheMu sync.Mutex
 )
 

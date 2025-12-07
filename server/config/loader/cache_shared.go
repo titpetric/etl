@@ -1,24 +1,27 @@
 package loader
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 )
 
 // CacheShared holds the cached configuration data as a decoded value.
 type CacheShared struct {
-	config *Config
+	config  *Config
+	storage fs.FS
 }
 
 // CacheSharedManager manages a cache that clones the configuration data on retrieval.
 type CacheSharedManager struct {
 	mu      sync.RWMutex
 	entries map[string]CacheShared
+	storage fs.FS
 }
 
 // NewCacheSharedManager creates a new CacheSharedManager, which caches the configuration data and clones it on retrieval.
-func NewCacheSharedManager() *CacheSharedManager {
+func NewCacheSharedManager(storage fs.FS) *CacheSharedManager {
 	return &CacheSharedManager{
+		storage: storage,
 		entries: make(map[string]CacheShared),
 	}
 }
@@ -38,7 +41,7 @@ func (c *CacheSharedManager) Get(filename string) (*Config, error) {
 
 // Set stores the configuration in the cache.
 func (c *CacheSharedManager) set(filename string, data []byte) error {
-	cfg, err := Decode(data)
+	cfg, err := Decode(c.storage, data)
 	if err != nil {
 		return err
 	}
@@ -53,7 +56,7 @@ func (c *CacheSharedManager) set(filename string, data []byte) error {
 
 // loadAndSet loads the configuration file and updates the cache.
 func (c *CacheSharedManager) loadAndSet(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}

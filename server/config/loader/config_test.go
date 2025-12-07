@@ -1,7 +1,14 @@
 package loader
 
+import (
+	"io/fs"
+	"os"
+)
+
 var testConfig = struct {
-	Path string
+	Storage fs.FS
+	Path    string
 }{
-	Path: "../testdata/config.yml",
+	Storage: os.DirFS("testdata"),
+	Path:    "config.yml",
 }

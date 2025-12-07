@@ -28,31 +28,31 @@ func benchmarkLoaderFunc(cache Cache) func(b *testing.B) {
 }
 
 func BenchmarkCacheSharedManager(b *testing.B) {
-	cache := NewCacheSharedManager()
+	cache := NewCacheSharedManager(testConfig.Storage)
 	benchmarkLoaderFunc(cache)(b)
 }
 
 func BenchmarkCacheCloneManager(b *testing.B) {
-	cache := NewCacheCloneManager()
+	cache := NewCacheCloneManager(testConfig.Storage)
 	benchmarkLoaderFunc(cache)(b)
 }
 
 func BenchmarkCacheModifiedManager(b *testing.B) {
-	cache := NewCacheModifiedManager()
+	cache := NewCacheModifiedManager(testConfig.Storage)
 	benchmarkLoaderFunc(cache)(b)
 }
 
 func BenchmarkCacheExpiryManager(b *testing.B) {
-	cache := NewCacheExpiryManager(time.Second)
+	cache := NewCacheExpiryManager(testConfig.Storage, time.Second)
 	benchmarkLoaderFunc(cache)(b)
 }
 
 func BenchmarkCacheForeverManager(b *testing.B) {
-	cache := NewCacheForeverManager()
+	cache := NewCacheForeverManager(testConfig.Storage)
 	benchmarkLoaderFunc(cache)(b)
 }
 
 func BenchmarkCacheNone(b *testing.B) {
-	cache := NewCacheNone()
+	cache := NewCacheNone(testConfig.Storage)
 	benchmarkLoaderFunc(cache)(b)
 }

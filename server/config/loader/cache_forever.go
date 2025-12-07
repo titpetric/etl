@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 )
 
@@ -13,12 +13,14 @@ type CacheForever struct {
 // CacheForeverManager manages a cache that caches configuration data indefinitely.
 type CacheForeverManager struct {
 	mu      sync.RWMutex
+	storage fs.FS
 	entries map[string]CacheForever
 }
 
 // NewCacheForeverManager creates a new CacheForeverManager, which caches the configuration data indefinitely.
-func NewCacheForeverManager() *CacheForeverManager {
+func NewCacheForeverManager(storage fs.FS) *CacheForeverManager {
 	return &CacheForeverManager{
+		storage: storage,
 		entries: make(map[string]CacheForever),
 	}
 }
@@ -30,16 +32,17 @@ func (c *CacheForeverManager) Get(filename string) (*Config, error) {
 	c.mu.RUnlock()
 
 	if exists {
-		return Decode(cacheEntry.data)
+		return Decode(c.storage, cacheEntry.data)
 	}
 
 	return c.loadAndSet(filename)
 }
 
-// Set stores the configuration in the cache.
+// Set stores the configuration in the cache with the filesystem.
 func (c *CacheForeverManager) set(filename string, data []byte) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+
 	c.entries[filename] = CacheForever{
 		data: data,
 	}
@@ -48,7 +51,7 @@ func (c *CacheForeverManager) set(filename string, data []byte) error {
 
 // loadAndSet loads the configuration file and updates the cache.
 func (c *CacheForeverManager) loadAndSet(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +60,7 @@ func (c *CacheForeverManager) loadAndSet(filename string) (*Config, error) {
 		return nil, err
 	}
 
-	return c.Get(filename)
+	return Decode(c.storage, data)
 }
 
 // String returns the name of the cache implementation.

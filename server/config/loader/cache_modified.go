@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 	"time"
 )
@@ -16,11 +16,13 @@ type CacheModified struct {
 type CacheModifiedManager struct {
 	mu      sync.RWMutex
 	entries map[string]CacheModified
+	storage fs.FS
 }
 
 // NewCacheModifiedManager creates a new CacheModifiedManager, which caches the configuration data and invalidates it based on file modification time.
-func NewCacheModifiedManager() *CacheModifiedManager {
+func NewCacheModifiedManager(storage fs.FS) *CacheModifiedManager {
 	return &CacheModifiedManager{
+		storage: storage,
 		entries: make(map[string]CacheModified),
 	}
 }
@@ -32,7 +34,7 @@ func (c *CacheModifiedManager) Get(filename string) (*Config, error) {
 	c.mu.RUnlock()
 
 	if exists {
-		stat, err := os.Stat(filename)
+		stat, err := fs.Stat(c.storage, filename)
 		if err != nil {
 			return nil, err
 		}
@@ -41,13 +43,13 @@ func (c *CacheModifiedManager) Get(filename string) (*Config, error) {
 			return c.loadAndSet(filename)
 		}
 
-		return Decode(cacheEntry.data)
+		return Decode(c.storage, cacheEntry.data)
 	}
 
 	return c.loadAndSet(filename)
 }
 
-// Set stores the configuration in the cache with the file modification time.
+// Set stores the configuration in the cache with the file modification time and filesystem.
 func (c *CacheModifiedManager) set(filename string, data []byte) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -62,7 +64,7 @@ func (c *CacheModifiedManager) set(filename string, data []byte) error {
 
 // loadAndSet loads the configuration file and updates the cache.
 func (c *CacheModifiedManager) loadAndSet(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +73,7 @@ func (c *CacheModifiedManager) loadAndSet(filename string) (*Config, error) {
 		return nil, err
 	}
 
-	return Decode(data)
+	return Decode(c.storage, data)
 }
 
 // String returns the name of the cache implementation.

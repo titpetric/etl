@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 	"time"
 )
@@ -16,12 +16,14 @@ type CacheExpiry struct {
 type CacheExpiryManager struct {
 	mu      sync.RWMutex
 	entries map[string]CacheExpiry
+	storage fs.FS
 	ttl     time.Duration
 }
 
 // NewCacheExpiryManager creates a new CacheExpiryManager with the given TTL.
-func NewCacheExpiryManager(ttl time.Duration) *CacheExpiryManager {
+func NewCacheExpiryManager(storage fs.FS, ttl time.Duration) *CacheExpiryManager {
 	return &CacheExpiryManager{
+		storage: storage,
 		entries: make(map[string]CacheExpiry),
 		ttl:     ttl,
 	}
@@ -34,13 +36,13 @@ func (c *CacheExpiryManager) Get(filename string) (*Config, error) {
 	c.mu.RUnlock()
 
 	if exists && time.Now().Before(cacheEntry.expiry) {
-		return Decode(cacheEntry.data)
+		return Decode(c.storage, cacheEntry.data)
 	}
 
 	return c.loadAndSet(filename)
 }
 
-// Set stores the configuration in the cache with an expiry time.
+// Set stores the configuration in the cache with an expiry time and filesystem.
 func (c *CacheExpiryManager) set(filename string, data []byte) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -54,7 +56,7 @@ func (c *CacheExpiryManager) set(filename string, data []byte) error {
 
 // loadAndSet loads the configuration file and updates the cache.
 func (c *CacheExpiryManager) loadAndSet(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +65,7 @@ func (c *CacheExpiryManager) loadAndSet(filename string) (*Config, error) {
 		return nil, err
 	}
 
-	return c.Get(filename)
+	return Decode(c.storage, data)
 }
 
 // String returns the name of the cache implementation.

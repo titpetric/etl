@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 
 	clone "github.com/huandu/go-clone"
@@ -15,12 +15,14 @@ type CacheClone struct {
 // CacheCloneManager manages a cache that clones the configuration data on retrieval.
 type CacheCloneManager struct {
 	mu      sync.RWMutex
+	storage fs.FS
 	entries map[string]CacheClone
 }
 
 // NewCacheCloneManager creates a new CacheCloneManager, which caches the configuration data and clones it on retrieval.
-func NewCacheCloneManager() *CacheCloneManager {
+func NewCacheCloneManager(storage fs.FS) *CacheCloneManager {
 	return &CacheCloneManager{
+		storage: storage,
 		entries: make(map[string]CacheClone),
 	}
 }
@@ -29,18 +31,18 @@ func NewCacheCloneManager() *CacheCloneManager {
 func (c *CacheCloneManager) Get(filename string) (*Config, error) {
 	c.mu.RLock()
 	cacheEntry, exists := c.entries[filename]
-	c.mu.RUnlock()
-
 	if exists {
+		defer c.mu.RUnlock()
 		return clone.Clone(cacheEntry.config).(*Config), nil
 	}
+	c.mu.RUnlock()
 
 	return c.loadAndSet(filename)
 }
 
 // Set stores the configuration in the cache.
 func (c *CacheCloneManager) set(filename string, data []byte) error {
-	cfg, err := Decode(data)
+	cfg, err := Decode(c.storage, data)
 	if err != nil {
 		return err
 	}
@@ -55,7 +57,7 @@ func (c *CacheCloneManager) set(filename string, data []byte) error {
 
 // loadAndSet loads the configuration file and updates the cache.
 func (c *CacheCloneManager) loadAndSet(filename string) (*Config, error) {
-	data, err := os.ReadFile(filename)
+	data, err := fs.ReadFile(c.storage, filename)
 	if err != nil {
 		return nil, err
 	}
