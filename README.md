@@ -1,143 +1,209 @@
-# ETL tooling for your CI pipelines
+# ETL - SQL-First API & Web Development Framework
 
-The etl cli enables you to interface your database from shell scripts.
+[![Go Report Card](https://goreportcard.com/badge/github.com/titpetric/etl)](https://goreportcard.com/report/github.com/titpetric/etl)
+[![Coverage](https://img.shields.io/badge/coverage-31.7%25-orange)](./coverage.out)
+[![GoDoc](https://pkg.go.dev/badge/github.com/titpetric/etl.svg)](https://pkg.go.dev/github.com/titpetric/etl)
 
-It supports:
+**ETL** is a no-code SQL-oriented framework enabling rapid development of APIs, web applications, and CQRS systems. Define endpoints declaratively in YAML, execute parameterized SQL queries, and serve JSON APIs or render HTML templates—all without writing Go code.
 
-- sqlite,
-- postgres,
-- mysql
+## Quick Navigation
 
-It can be used as a CLI to interface with your choice of database, or it
-can be invoked as `etl server`, serving SQL-first API endpoints.
+- **[CLI Reference](./docs/cli.md)** – Command-line tool usage, database operations, and examples
+- **[Server Development](./docs/server.md)** – API configuration, web development, and template rendering
 
-## Testing
+## Overview
 
-Two main test suites are available:
+ETL supports three major use cases:
 
-- [tests/git-tags](./tests/git-tags) demonstrates CLI usage,
-- [tests/petstore](./tests/petstore) demonstrates SQL as an API.
+1. **CLI Database Interface** – Query and manipulate databases from shell scripts
+2. **SQL-First API Development** – Expose database queries as REST endpoints with zero boilerplate
+3. **Web & CQRS Development** – Separate read and write models with composable HTTP-based architecture
 
-The ETL tool along with `etl server` allows you to expose the result of
-an SQL query or multiple SQL queries as an API endpoint by providing an
-`etl.yml` with the configuration for that. See the petstore example.
+### Supported Databases
 
-To run the tests:
+- SQLite
+- PostgreSQL
+- MySQL
 
-- run `task up` in the root of the project,
-- run `task` in the `tests/petstore` location.
+## Getting Started
 
-Run `task setup` to install any development tooling required.
-
-## Installation
+### Installation
 
 ```bash
 go install github.com/titpetric/etl/cmd/etl@main
 ```
 
+### Quick Start with CLI
+
+```bash
+# Configure database
+export ETL_DB_DRIVER=sqlite
+export ETL_DB_DSN="file:app.db"
+
+# Initialize schema
+etl query schema.sql
+
+# Insert records
+echo '{"name":"Alice","email":"alice@example.com"}' | etl insert users
+
+# Query data
+etl get users --all
+
+# Update records
+echo '{"name":"Alice Updated"}' | etl update users id=1
+```
+
+### Quick Start with Server
+
+Create `etl.yml`:
+```yaml
+endpoints:
+  - path: /api/users
+    methods: [GET]
+    handler:
+      type: sql
+      query: SELECT id, name, email FROM users ORDER BY id
+```
+
+Start server:
+```bash
+etl server
+```
+
+Access: `curl http://localhost:8080/api/users`
+
+## Documentation
+
+### [CLI Reference](./docs/cli.md)
+
+Complete guide to command-line operations:
+- Database configuration (SQLite, PostgreSQL, MySQL)
+- Creating and initializing schemas
+- Reading data (single records, all records, custom queries)
+- Writing data (insert, update, delete with SQL files)
+- Working with JSON data
+- Full workflow examples
+
+### [Server Development](./docs/server.md)
+
+Build APIs and web applications with ETL:
+- Simple API endpoints from SQL queries
+- Web development with Vuego templates
+- Composing APIs with external data sources
+- CQRS patterns
+- HTML rendering
+
+## Testing
+
+Two main test suites demonstrate core functionality:
+
+- **[tests/git-tags](./tests/git-tags)** – CLI usage examples
+- **[tests/petstore](./tests/petstore)** – SQL-as-API examples
+- **[tests/users](./tests/users)** – CQRS and integrated testing
+
+Run tests:
+```bash
+task up          # Start services
+task test        # Run all tests
+```
+
+## Configuration
+
+Set environment variables:
+
+```bash
+# SQLite (default)
+export ETL_DB_DRIVER=sqlite
+export ETL_DB_DSN="file:myapp.db"
+
+# PostgreSQL
+export ETL_DB_DRIVER=postgres
+export ETL_DB_DSN="postgres://user:pass@localhost:5432/dbname"
+
+# MySQL
+export ETL_DB_DRIVER=mysql
+export ETL_DB_DSN="user:pass@tcp(localhost:3306)/dbname"
+```
+
 ## Development
 
-Taskfile is required for the development.
-
-- `task` will run some formatting and build etl,
-- `task setup` will install or update development dependencies.
-
-Use `task -l` to discover other tasks.
-
-## Usage examples
-
-**To insert records**:
-
-- `etl insert <table> [column=value column2=value2 ...]`
-- `cat records.json | etl insert <table> [column=value ...]`
-
-The input json is optional. Column values can be overriden as arguments.
-The passed column value supports reading in files with `json=@<file>`.
-This will set the JSON data to the column named `json` in the database.
-
-**To update records**
-
-To update records, use `etl update`. Records get updated by some sort of
-conditions. To pass a "where" style condition, additional parameters can
-be passed to update similar to etl insert:
-
-- `cat records.json | etl update record_id`
-- `echo '{"disabled":true}' | etl update created_at=NULL`
-
-This in essence lets you bulk update records but should likely write a
-custom update query for anything other than bulk import.
-
-**To get records**:
-
-- `etl get <table> [--all] [column=value ...]`
-
-It will return one record, unless `--all` is provided. The optional
-column arguments are used to filter data for a `WHERE` clause.
-
-**To use custom queries**:
-
-- `etl query <file.sql> [column=value ...]`
-
-The query file supports named parameters which are filled from arguments
-(`:column`). The query files are usually coupled to the database you're
-working with due to differences between SQL syntax.
-
-```sql
-update github_tags set created_at=:created_at where commit_sha=:commit_sha
-```
-
-For such a query, the value for `created_at` and `commmit_sha` can be
-derived from the parameters (`etl query file.sql created_at=$(date -r) commit_sha=$(git rev-parse HEAD)`).
-This makes the formatting of the value accessible, as sometimes it needs
-to be transformed into the correct format for insertion.
-
-> In order to implement the correct deletion or truncation behaviour for
-> any database, a query file should be created. The cli doesn't provide
-> any `delete` or `truncate` functionality for several unstated reasons.
-
-## Motivation
-
-I didn't find any nice tooling that would let me create and update
-records in a set of desired database types (mysql, pgsql, sqlite).
-
-The `etl` cli is an attempt to provide a database agnostic interface
-that allows one to either use a sqlite db temporarily or connects to
-persistent storage.
-
-One could use database particular clients (`pgsql...`, `mysql -e`,...).
-
-The `etl` tool does something similar in order to:
-
-- provide better support for JSON data sources as input
-- provide simple insert/update support with arguments over json
-- provide query capability allowing customization
-
-It's intended that `etl` is used in combination with `jq` or `yq` to
-process JSON data before storing it into the database.
-
-If you need proper database migrations, take a look at
-[go-bridget/mig](https://github.com/go-bridget/mig).
-
-## Configuring
-
-All you need to do to make the cli functional is to declare the
-following environment variables:
+Requires [Task](https://taskfile.dev) for development workflows.
 
 ```bash
+task setup    # Install development dependencies
+task          # Format and build
+task -l       # List all available tasks
+```
+
+## Why ETL?
+
+**Standard database clients** (`psql`, `mysql -e`) require mastering database-specific syntax and CLIs.
+
+**ETL provides:**
+- Unified interface across SQLite, PostgreSQL, and MySQL
+- First-class JSON support for input/output
+- Simple insert/update operations via JSON or arguments
+- Custom SQL query capability for complex operations
+- Rapid API development without boilerplate
+- Web application rendering alongside API servers
+
+**Use with** `jq`, `yq`, or other standard tools for data transformation pipelines.
+
+## Example: Complete Workflow
+
+```bash
+# 1. Create and initialize database
 export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:git-tags.db"
+export ETL_DB_DSN="file:app.db"
+etl query schema.sql
+
+# 2. Insert bulk data from JSON file
+cat users.json | jq '.[]' | etl insert users
+
+# 3. Query and filter
+etl query queries/active-users.sql | jq '.[] | select(.status=="active")'
+
+# 4. Update records
+cat updates.json | etl update users id=:id
+
+# 5. Serve as API
+etl server
 ```
 
-For MySQL you would do:
+## Architecture
 
-```bash
-export ETL_DB_DRIVER=mysql
-export ETL_DB_DSN="etl:etl@tcp(localhost:3306)/etl"
+```
+┌─────────────┐
+│   etl CLI   │  Database operations, custom queries
+└──────┬──────┘
+       │
+   ┌───┴──────────────┐
+   │   Databases      │
+   ├──────────────────┤
+   │ SQLite / PG / MY │
+   └──────────────────┘
+       
+┌─────────────────────┐
+│   etl server        │  API & Web
+├─────────────────────┤
+│  YAML Config        │
+│  Routes → Handlers  │
+│  SQL Queries        │
+│  Templates (Vuego)  │
+└────────┬────────────┘
+         │
+    ┌────┴─────────────────┐
+    │  API Responses (JSON) │
+    │  HTML Rendering      │
+    └──────────────────────┘
 ```
 
-For Postgres something like:
+## License
 
-```bash
-export ETL_DB_DRIVER=postgres
-export ETL_DB_DSN="postgres://username:password@localhost:5432/database_name"
-```
+[See LICENSE file](./LICENSE)
+
+## References
+
+- [go-bridget/mig](https://github.com/go-bridget/mig) – For database migrations
+- [titpetric/vuego](https://github.com/titpetric/vuego) – Template engine
+- [titpetric/platform](https://github.com/titpetric/platform) – HTTP server framework
