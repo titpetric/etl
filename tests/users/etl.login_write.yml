@@ -1,6 +1,6 @@
 endpoints:
-  # Command: Login user
-  - path: "/login"
+  - name: "Login user"
+    path: "/login"
     methods: [POST]
     handler:
       type: "sql"
@@ -20,8 +20,8 @@ endpoints:
         rate: 50
         per: "1m"
 
-  # Command: Logout user (delete session)
-  - path: "/logout"
+  - name: "Logout user"
+    path: "/logout"
     methods: [POST]
     handler:
       type: "sql"

@@ -578,14 +578,16 @@ func (h *Handler) setInCache(key string, data interface{}) {
 	h.cacheMutex.Lock()
 	defer h.cacheMutex.Unlock()
 
-	ttl := 300
-	if h.Cache != nil && h.Cache.TTLSeconds > 0 {
-		ttl = h.Cache.TTLSeconds
+	ttl := 5 * time.Minute
+	if h.Cache != nil && h.Cache.Expire != "" {
+		if duration, err := time.ParseDuration(h.Cache.Expire); err == nil {
+			ttl = duration
+		}
 	}
 
 	h.cacheStore[key] = &cacheEntry{
 		data:      data,
-		expiresAt: time.Now().Add(time.Duration(ttl) * time.Second),
+		expiresAt: time.Now().Add(ttl),
 	}
 }
 
@@ -650,11 +652,11 @@ func (h *Handler) Handler(conf *config.Config, endpoint *config.Endpoint) (http.
 
 	// Log cache configuration if enabled
 	if handle.Cache != nil && handle.Cache.Enabled {
-		ttl := handle.Cache.TTLSeconds
-		if ttl <= 0 {
-			ttl = 300
+		expire := handle.Cache.Expire
+		if expire == "" {
+			expire = "5m"
 		}
-		// log.Printf("Cache enabled: TTL %d seconds", ttl)
+		// log.Printf("Cache enabled: TTL %s", expire)
 	}
 
 	// Log transaction configuration if enabled

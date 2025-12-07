@@ -1,6 +1,6 @@
 endpoints:
-  # Query: Get all orders
-  - path: "/orders"
+  - name: "List all orders"
+    path: "/orders"
     methods: [GET]
     handler:
       type: "sql"
@@ -11,7 +11,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "orders:all"
       
       rateLimit:
@@ -19,8 +19,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Query: Get single order
-  - path: "/orders/{id}"
+  - name: "Get order by ID"
+    path: "/orders/{id}"
     methods: [GET]
     handler:
       type: "sql"
@@ -40,7 +40,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "order:{id}"
       
       rateLimit:
@@ -48,8 +48,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Query: Get user orders
-  - path: "/users/{user_id}/orders"
+  - name: "List user orders"
+    path: "/users/{user_id}/orders"
     methods: [GET]
     handler:
       type: "sql"
@@ -61,7 +61,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "user:{user_id}:orders"
       
       rateLimit:

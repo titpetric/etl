@@ -83,8 +83,9 @@ type Cache struct {
 	// Enabled indicates whether response caching is enabled.
 	Enabled bool `yaml:"enabled"`
 
-	// TTLSeconds specifies the cache time-to-live in seconds.
-	TTLSeconds int `yaml:"ttlSeconds"`
+	// Expire specifies the cache time-to-live duration (e.g., "30s", "5m", "1h").
+	// Supports all time.Duration formats. Defaults to 5 minutes if not specified.
+	Expire string `yaml:"expire"`
 
 	// KeyPattern specifies the cache key pattern (supports path and query parameters).
 	KeyPattern string `yaml:"keyPattern"`

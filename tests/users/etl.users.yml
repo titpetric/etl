@@ -1,6 +1,6 @@
 endpoints:
-  # Query: Get all users as JSON
-  - path: "/api/users"
+  - name: "List all users"
+    path: "/api/users"
     methods: [GET]
     handler:
       type: "sql"
@@ -11,7 +11,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "users:all"
       
       rateLimit:
@@ -19,8 +19,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Query: Get single user as JSON
-  - path: "/api/users/{id}"
+  - name: "Get user by ID"
+    path: "/api/users/{id}"
     methods: [GET]
     handler:
       type: "sql"
@@ -32,7 +32,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "user:{id}"
       
       rateLimit:
@@ -40,8 +40,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Query: Get all users as HTML (calls /api/users and renders as VueGo template)
-  - path: "/users"
+  - name: "Users list HTML page"
+    path: "/users"
     methods: [GET]
     handler:
       type: "request"
@@ -72,8 +72,8 @@ endpoints:
             </tbody>
           </table>
 
-  # Query: Get single user as HTML (calls /api/users/{id} and renders as VueGo template)
-  - path: "/users/{id}"
+  - name: "User details HTML page"
+    path: "/users/{id}"
     methods: [GET]
     handler:
       type: "request"

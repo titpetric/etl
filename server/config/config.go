@@ -45,6 +45,9 @@ type Endpoint struct {
 	// Path contains the path passed to the handler. It's a request path e.g. `/api`.
 	Path string `yaml:"path"`
 
+	// Name describes what the endpoint returns.
+	Name string `yaml:"name"`
+
 	// Methods contains the HTTP request methods. If omitted, all methods are considered.
 	Methods []string `yaml:"methods"`
 

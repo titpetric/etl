@@ -6,15 +6,18 @@ server:
   grpc: ":50051"
 
 endpoints:
-  - path: "/api/ping"
+  - name: "Ping health check"
+    path: "/api/ping"
     handler:
       type: "ping"
 
-  - path: "/api/echo"
+  - name: "Echo request body back"
+    path: "/api/echo"
     handler:
       type: "echo"
 
-  - path: "/api/php-fastcgi"
+  - name: "Execute PHP through FastCGI"
+    path: "/api/php-fastcgi"
     handler:
       type: "fastcgi"
       root: "."
@@ -22,24 +25,27 @@ endpoints:
       network: "tcp"
       address: "php-fpm:9000"
 
-  - path: "/api/exec-php"
+  - name: "Execute PHP script directly"
+    path: "/api/exec-php"
     handler:
       type: "exec"
       command: ["/usr/bin/php", "index.php"]
 
-
-  - path: "/api/fortune"
+  - name: "Random fortune quote"
+    path: "/api/fortune"
     handler:
       type: "exec"
       command: ["/usr/games/fortune"]
 
-  - path: "/api/plugin-ping"
+  - name: "Plugin ping function"
+    path: "/api/plugin-ping"
     handler:
       type: "plugin"
       library: "./plugins/plugins.so"
       function: "PluginPing"
 
-  - path: "/api/background-task"
+  - name: "Background task execution"
+    path: "/api/background-task"
     handler:
       type: "plugin"
       library: "./plugins/plugins.so"

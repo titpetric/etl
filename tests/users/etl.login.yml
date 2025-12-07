@@ -1,6 +1,6 @@
 endpoints:
-  # Query: Get session by ID
-  - path: "/sessions/{id}"
+  - name: "Get session by ID"
+    path: "/sessions/{id}"
     methods: [GET]
     handler:
       type: "sql"
@@ -12,7 +12,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "session:{id}"
       
       rateLimit:

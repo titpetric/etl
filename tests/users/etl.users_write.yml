@@ -1,6 +1,6 @@
 endpoints:
-  # Command: Create user
-  - path: "/api/users"
+  - name: "Create user"
+    path: "/api/users"
     methods: [POST]
     handler:
       type: "sql"
@@ -20,8 +20,8 @@ endpoints:
         rate: 20
         per: "1m"
 
-  # Command: Update user
-  - path: "/api/users/{id}"
+  - name: "Update user"
+    path: "/api/users/{id}"
     methods: [PUT]
     handler:
       type: "sql"
@@ -42,8 +42,8 @@ endpoints:
         rate: 20
         per: "1m"
 
-  # Command: Delete user
-  - path: "/api/users/{id}"
+  - name: "Delete user"
+    path: "/api/users/{id}"
     methods: [DELETE]
     handler:
       type: "sql"

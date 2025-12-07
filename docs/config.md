@@ -44,6 +44,9 @@ Endpoint represents an endpoint configuration with a path and handler.
 **Field: `Path` (`string`)**
 Path contains the path passed to the handler. It's a request path e.g. `/api`.
 
+**Field: `Name` (`string`)**
+Name describes what the endpoint returns.
+
 **Field: `Methods` (`[]string`)**
 Methods contains the HTTP request methods. If omitted, all methods are considered.
 
@@ -156,8 +159,9 @@ Cache configures response caching behavior.
 **Field: `Enabled` (`boolean`)**
 Enabled indicates whether response caching is enabled.
 
-**Field: `TTLSeconds` (`int`)**
-TTLSeconds specifies the cache time-to-live in seconds.
+**Field: `Expire` (`string`)**
+Expire specifies the cache time-to-live duration (e.g., "30s", "5m", "1h").
+Supports all time.Duration formats. Defaults to 5 minutes if not specified.
 
 **Field: `KeyPattern` (`string`)**
 KeyPattern specifies the cache key pattern (supports path and query parameters).

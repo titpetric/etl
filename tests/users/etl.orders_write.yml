@@ -1,6 +1,6 @@
 endpoints:
-  # Command: Create order
-  - path: "/orders"
+  - name: "Create order"
+    path: "/orders"
     methods: [POST]
     handler:
       type: "sql"

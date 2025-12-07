@@ -7,8 +7,8 @@ storage:
   driver: "sqlite"
 
 endpoints:
-  # Get all available pets with caching
-  - path: "/pets"
+  - name: "List available pets"
+    path: "/pets"
     handler:
       type: "sql"
       parameters:
@@ -22,7 +22,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "pets:available"
       
       rateLimit:
@@ -30,8 +30,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Get single pet by ID with caching
-  - path: "/pets/{id}"
+  - name: "Get pet by ID"
+    path: "/pets/{id}"
     handler:
       type: "sql"
       single: true
@@ -42,7 +42,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "pet:{id}"
       
       rateLimit:
@@ -50,8 +50,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Get user orders with pets (multiple joins) with caching
-  - path: "/users/{id}/orders"
+  - name: "Get user orders"
+    path: "/users/{id}/orders"
     handler:
       type: "sql"
       query: |
@@ -63,7 +63,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "user:{id}:orders"
       
       rateLimit:
@@ -71,8 +71,8 @@ endpoints:
         rate: 50
         per: "1m"
 
-  # Get single order with all related data (multiple joins)
-  - path: "/orders/{id}"
+  - name: "Get order by ID"
+    path: "/orders/{id}"
     handler:
       type: "sql"
       single: true
@@ -91,7 +91,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "order:{id}"
       
       rateLimit:
@@ -99,8 +99,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Create order with transactional support
-  - path: "/orders"
+  - name: "Create order"
+    path: "/orders"
     methods: [POST]
     handler:
       type: "sql"
@@ -119,8 +119,8 @@ endpoints:
         rate: 20
         per: "1m"
 
-  # Update order status with transactional support
-  - path: "/orders/{id}/status"
+  - name: "Update order status"
+    path: "/orders/{id}/status"
     methods: [PUT]
     handler:
       type: "sql"
@@ -140,8 +140,8 @@ endpoints:
         rate: 20
         per: "1m"
 
-  # Create or list users with caching
-  - path: "/users"
+  - name: "List users"
+    path: "/users"
     handler:
       type: "sql"
       query: |
@@ -151,7 +151,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "users:all"
       
       rateLimit:
@@ -159,8 +159,8 @@ endpoints:
         rate: 50
         per: "1m"
 
-  # Get single user by ID with caching
-  - path: "/users/{id}"
+  - name: "Get user by ID"
+    path: "/users/{id}"
     handler:
       type: "sql"
       single: true
@@ -171,7 +171,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 600
+        expire: "10m"
         keyPattern: "user:{id}"
       
       rateLimit:
@@ -179,8 +179,8 @@ endpoints:
         rate: 100
         per: "1m"
 
-  # Dashboard: get summary statistics with caching
-  - path: "/dashboard/stats"
+  - name: "Dashboard statistics"
+    path: "/dashboard/stats"
     handler:
       type: "sql"
       single: true
@@ -193,7 +193,7 @@ endpoints:
       
       cache:
         enabled: true
-        ttlSeconds: 300
+        expire: "5m"
         keyPattern: "dashboard:stats"
       
       rateLimit:

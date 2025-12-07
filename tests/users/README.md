@@ -56,11 +56,11 @@ All endpoints with `rateLimit` enabled automatically include:
 - `X-RateLimit-Remaining`: Burst size
 
 ### 4. Caching
-Endpoints demonstrate caching with TTL-based invalidation:
+Endpoints demonstrate caching with duration-based invalidation:
 ```yaml
 cache:
   enabled: true
-  ttlSeconds: 300
+  expire: "5m"
   keyPattern: "users:all"
 ```
 
