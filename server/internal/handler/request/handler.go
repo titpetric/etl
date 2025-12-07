@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-
+	"github.com/titpetric/platform"
 	"github.com/titpetric/vuego"
 
 	"github.com/titpetric/etl/server/config"
@@ -44,6 +44,13 @@ func (h *Handler) EvaluateRequest(r *http.Request) (map[string]any, error) {
 	ctx := r.Context()
 	result := make(map[string]any)
 
+	// Get the platform instance to retrieve the base URL for subrequests
+	plat := platform.FromRequest(r)
+	baseURL := ""
+	if plat != nil {
+		baseURL = plat.URL()
+	}
+
 	for _, reqSpec := range h.Request {
 		var body io.Reader
 
@@ -57,10 +64,11 @@ func (h *Handler) EvaluateRequest(r *http.Request) (map[string]any, error) {
 		}
 
 		upstreamPath := h.buildUpstreamPath(r, reqSpec.Path)
-		log.Println("request:", method, upstreamPath)
+		upstreamURL := baseURL + upstreamPath
+		log.Println("request:", method, upstreamURL)
 
 		// --- Updated: use NewRequestWithContext ---
-		upstreamReq, err := http.NewRequestWithContext(ctx, method, upstreamPath, body)
+		upstreamReq, err := http.NewRequestWithContext(ctx, method, upstreamURL, body)
 		if err != nil {
 			return nil, err
 		}

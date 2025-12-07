@@ -2,100 +2,90 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"testing"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/stretchr/testify/require"
+	"github.com/titpetric/platform"
 
 	"github.com/titpetric/etl/server"
 )
 
 func TestCQRSAPIDirect(t *testing.T) {
 	// Initialize database
-	if err := initializeDatabase(); err != nil {
-		t.Fatalf("failed to initialize database: %v", err)
-	}
+	err := initializeDatabase()
+	require.NoError(t, err, "failed to initialize database")
 
-	// Create HTTP server handler directly
-	handler, err := server.NewHandler()
-	if err != nil {
-		t.Fatalf("failed to create server handler: %v", err)
-	}
+	// Load config
+	conf, err := server.NewConfig()
+	require.NoError(t, err, "failed to load config")
 
-	// Create test server
-	ts := httptest.NewServer(handler)
-	defer ts.Close()
+	// Create platform with the ETL module
+	opts := platform.NewTestOptions()
+	opts.Quiet = true
+	svc := platform.New(opts)
+	svc.Register(server.NewModule(conf))
+
+	// Start the service (blocks until setup is complete, then returns)
+	ctx, cancel := context.WithCancel(context.Background())
+	err = svc.Start(ctx)
+	require.NoError(t, err, "failed to start platform")
+
+	// Cleanup: stop the service and cancel context
+	t.Cleanup(func() {
+		svc.Stop()
+		cancel()
+	})
+
+	// Get the base URL from the platform
+	baseURL := svc.URL()
+	require.NotEmpty(t, baseURL, "platform URL should not be empty")
 
 	// ====================
 	// QUERY SIDE TESTS (READ)
 	// ====================
 
 	t.Run("Query/JSON/ListUsers", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/api/users")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/api/users")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode, "expected 200, got %d", resp.StatusCode)
 
 		var users []map[string]interface{}
-		if err := json.NewDecoder(resp.Body).Decode(&users); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.NewDecoder(resp.Body).Decode(&users)
+		require.NoError(t, err)
 
-		if len(users) != 3 {
-			t.Errorf("expected 3 users, got %d", len(users))
-		}
+		require.Len(t, users, 3, "expected 3 users, got %d", len(users))
 
 		// Check first user
-		if users[0]["name"] != "Alice Johnson" {
-			t.Errorf("expected name 'Alice Johnson', got %v", users[0]["name"])
-		}
-		if users[0]["email"] != "alice@example.com" {
-			t.Errorf("expected email 'alice@example.com', got %v", users[0]["email"])
-		}
+		require.Equal(t, "Alice Johnson", users[0]["name"])
+		require.Equal(t, "alice@example.com", users[0]["email"])
 	})
 
 	t.Run("Query/JSON/GetUser", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/api/users/1")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/api/users/1")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		var user map[string]interface{}
-		if err := json.NewDecoder(resp.Body).Decode(&user); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.NewDecoder(resp.Body).Decode(&user)
+		require.NoError(t, err)
 
-		if user["id"] != "1" {
-			t.Errorf("expected id '1', got %v", user["id"])
-		}
-		if user["name"] != "Alice Johnson" {
-			t.Errorf("expected name 'Alice Johnson', got %v", user["name"])
-		}
+		require.Equal(t, "1", user["id"])
+		require.Equal(t, "Alice Johnson", user["name"])
 	})
 
 	t.Run("Query/JSON/GetUserNotFound", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/api/users/999")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/api/users/999")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
 		// When no rows found, server typically returns 200 with null
@@ -104,61 +94,36 @@ func TestCQRSAPIDirect(t *testing.T) {
 	})
 
 	t.Run("Query/HTML/ListUsers", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/users")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/users")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
-		if ct := resp.Header.Get("Content-Type"); ct != "text/html; charset=utf-8" {
-			t.Errorf("expected Content-Type 'text/html; charset=utf-8', got %s", ct)
-		}
+		ct := resp.Header.Get("Content-Type")
+		require.Equal(t, "text/html; charset=utf-8", ct)
 
 		body, _ := io.ReadAll(resp.Body)
 		bodyStr := string(body)
 
-		if len(bodyStr) == 0 {
-			t.Error("response body is empty")
-			return
-		}
+		require.NotEmpty(t, bodyStr, "response body is empty")
 
 		// Check for HTML structure
-		if !bytes.Contains(body, []byte("<table>")) {
-			t.Errorf("response should contain HTML table, got: %s", bodyStr[:min(200, len(bodyStr))])
-		}
-		if !bytes.Contains(body, []byte("Alice Johnson")) {
-			t.Errorf("response should contain user data, got: %s", bodyStr[:min(200, len(bodyStr))])
-		}
+		require.Contains(t, bodyStr, "<table", "response should contain HTML table")
+		require.Contains(t, bodyStr, "Alice Johnson", "response should contain user data")
 	})
 
 	t.Run("Query/HTML/GetUser", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/users/1")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/users/1")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		body, _ := io.ReadAll(resp.Body)
-		bodyStr := string(body)
 
-		if !bytes.Contains(body, []byte("User Details")) {
-			t.Errorf("response should contain user details title, got: %s", bodyStr[:min(200, len(bodyStr))])
-		}
-		if !bytes.Contains(body, []byte("alice@example.com")) {
-			t.Errorf("response should contain user email, got: %s", bodyStr[:min(200, len(bodyStr))])
-		}
+		require.Contains(t, string(body), "User Details", "response should contain user details title")
+		require.Contains(t, string(body), "alice@example.com", "response should contain user email")
 	})
 
 	// ====================
@@ -168,93 +133,62 @@ func TestCQRSAPIDirect(t *testing.T) {
 	t.Run("Command/CreateUser", func(t *testing.T) {
 		client := &http.Client{}
 		payload := bytes.NewBufferString(`{"name":"David Brown","email":"david@example.com"}`)
-		req, err := http.NewRequest("POST", ts.URL+"/api/users", payload)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
+		req, err := http.NewRequest("POST", baseURL+"/api/users", payload)
+		require.NoError(t, err)
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		body, _ := io.ReadAll(resp.Body)
 
 		var user map[string]interface{}
-		if err := json.Unmarshal(body, &user); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.Unmarshal(body, &user)
+		require.NoError(t, err)
 
-		if user["name"] != "David Brown" {
-			t.Errorf("expected name 'David Brown', got %v", user["name"])
-		}
-		if user["email"] != "david@example.com" {
-			t.Errorf("expected email 'david@example.com', got %v", user["email"])
-		}
+		require.Equal(t, "David Brown", user["name"])
+		require.Equal(t, "david@example.com", user["email"])
 	})
 
 	t.Run("Command/UpdateUser", func(t *testing.T) {
 		client := &http.Client{}
 		payload := bytes.NewBufferString(`{"name":"Alice Updated","email":"alice.updated@example.com"}`)
-		req, err := http.NewRequest("PUT", ts.URL+"/api/users/1", payload)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
+		req, err := http.NewRequest("PUT", baseURL+"/api/users/1", payload)
+		require.NoError(t, err)
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		body, _ := io.ReadAll(resp.Body)
 
 		var user map[string]interface{}
-		if err := json.Unmarshal(body, &user); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.Unmarshal(body, &user)
+		require.NoError(t, err)
 
-		if user["name"] != "Alice Updated" {
-			t.Errorf("expected updated name, got %v", user["name"])
-		}
+		require.Equal(t, "Alice Updated", user["name"])
 	})
 
 	t.Run("Command/DeleteUser", func(t *testing.T) {
 		client := &http.Client{}
-		req, err := http.NewRequest("DELETE", ts.URL+"/api/users/3", nil)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
+		req, err := http.NewRequest("DELETE", baseURL+"/api/users/3", nil)
+		require.NoError(t, err)
 
 		resp, err := client.Do(req)
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		// Verify deletion
-		verifyResp, err := http.Get(ts.URL + "/api/users/3")
-		if err != nil {
-			t.Fatalf("verification request failed: %v", err)
-		}
+		verifyResp, err := http.Get(baseURL + "/api/users/3")
+		require.NoError(t, err)
 		defer verifyResp.Body.Close()
 		t.Logf("After delete, status: %d", verifyResp.StatusCode)
 	})
@@ -264,81 +198,53 @@ func TestCQRSAPIDirect(t *testing.T) {
 	// ====================
 
 	t.Run("Query/GetOrders", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/orders")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/orders")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		var orders []map[string]interface{}
-		if err := json.NewDecoder(resp.Body).Decode(&orders); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.NewDecoder(resp.Body).Decode(&orders)
+		require.NoError(t, err)
 
-		if len(orders) < 1 {
-			t.Errorf("expected at least 1 order, got %d", len(orders))
-		}
+		require.GreaterOrEqual(t, len(orders), 1, "expected at least 1 order")
 	})
 
 	t.Run("Query/GetUserOrders", func(t *testing.T) {
-		resp, err := http.Get(ts.URL + "/users/1/orders")
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		resp, err := http.Get(baseURL + "/users/1/orders")
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-			return
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		var orders []map[string]interface{}
-		if err := json.NewDecoder(resp.Body).Decode(&orders); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.NewDecoder(resp.Body).Decode(&orders)
+		require.NoError(t, err)
 
-		if len(orders) != 2 {
-			t.Errorf("expected 2 orders for user 1, got %d", len(orders))
-		}
+		require.Len(t, orders, 2, "expected 2 orders for user 1")
 	})
 
 	t.Run("Command/CreateOrder", func(t *testing.T) {
 		client := &http.Client{}
 		payload := bytes.NewBufferString(`{"user_id":"1","total_amount":"50.00","status":"pending"}`)
-		req, err := http.NewRequest("POST", ts.URL+"/orders", payload)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
+		req, err := http.NewRequest("POST", baseURL+"/orders", payload)
+		require.NoError(t, err)
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		body, _ := io.ReadAll(resp.Body)
 
 		var order map[string]interface{}
-		if err := json.Unmarshal(body, &order); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.Unmarshal(body, &order)
+		require.NoError(t, err)
 
-		if order["status"] != "pending" {
-			t.Errorf("expected status 'pending', got %v", order["status"])
-		}
+		require.Equal(t, "pending", order["status"])
 	})
 
 	// ====================
@@ -348,42 +254,24 @@ func TestCQRSAPIDirect(t *testing.T) {
 	t.Run("Command/Login", func(t *testing.T) {
 		client := &http.Client{}
 		payload := bytes.NewBufferString(`{"user_id":"1","token":"test_token_12345"}`)
-		req, err := http.NewRequest("POST", ts.URL+"/login", payload)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
+		req, err := http.NewRequest("POST", baseURL+"/login", payload)
+		require.NoError(t, err)
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil {
-			t.Fatalf("request failed: %v", err)
-		}
+		require.NoError(t, err)
 		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, _ := io.ReadAll(resp.Body)
-			t.Errorf("expected 200, got %d: %s", resp.StatusCode, string(body))
-		}
+		require.Equal(t, 200, resp.StatusCode)
 
 		body, _ := io.ReadAll(resp.Body)
 
 		var session map[string]interface{}
-		if err := json.Unmarshal(body, &session); err != nil {
-			t.Fatalf("failed to decode response: %v", err)
-		}
+		err = json.Unmarshal(body, &session)
+		require.NoError(t, err)
 
-		if session["token"] != "test_token_12345" {
-			t.Errorf("expected token to match, got %v", session["token"])
-		}
+		require.Equal(t, "test_token_12345", session["token"])
 	})
-}
-
-// min returns the minimum of two integers
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 // initializeDatabase sets up the test database with schema and seed data
