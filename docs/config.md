@@ -47,21 +47,8 @@ Path contains the path passed to the handler. It's a request path e.g. `/api`.
 **Field: `Methods` (`[]string`)**
 Methods contains the HTTP request methods. If omitted, all methods are considered.
 
-**Field: `Paths` ([[]Path](#path))**
-Paths contains multiple paths and methods for the handler.
-
 **Field: `Handler` ([Handler](#handler))**
 Handler contains configuration related to the particular handler for the request.
-
-# Path
-
-Path is the combination of Method and Path.
-
-**Field: `Methods` (`[]string`)**
-Methods contains the HTTP request methods. If omitted, all methods are considered.
-
-**Field: `Path` (`string`)**
-Path contains the request path for the router, e.g. `/users/{id}`.
 
 # Handler
 
@@ -107,7 +94,7 @@ RateLimit configures rate limiting for the endpoint.
 **Field: `Response` ([Response](#response))**
 Response configures the response format and headers.
 
-**Field: `decoder` (`&ast.FuncType{Func:6799, TypeParams:(*ast.FieldList)(nil), Params:(*ast.FieldList)(0xc00016e330), Results:(*ast.FieldList)(0xc00016e360)}`)**
+**Field: `decoder` (`func`)**
 
 
 # Request
@@ -206,4 +193,14 @@ or text/html; charset=utf-8 for template responses.
 **Field: `Template` (`string`)**
 Template is a VueGo template string for formatting the response.
 If specified, the response will be rendered using this template.
+
+# Path
+
+Path is the combination of Method and Path.
+
+**Field: `Methods` (`[]string`)**
+Methods contains the HTTP request methods. If omitted, all methods are considered.
+
+**Field: `Path` (`string`)**
+Path contains the request path for the router, e.g. `/users/{id}`.
 

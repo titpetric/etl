@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/expr-lang/expr"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/time/rate"
 
@@ -140,8 +140,13 @@ func (h *Handler) collectParameters(r *http.Request) map[string]interface{} {
 	}
 
 	// 2. Path parameters
-	for k, v := range mux.Vars(r) {
-		params[k] = v
+	rctx := chi.RouteContext(r.Context())
+	if rctx != nil {
+		for i, key := range rctx.URLParams.Keys {
+			if i < len(rctx.URLParams.Values) {
+				params[key] = rctx.URLParams.Values[i]
+			}
+		}
 	}
 
 	// 3. Query string parameters

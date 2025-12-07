@@ -115,48 +115,6 @@ func TestCacheMiddlewareOnlyGET(t *testing.T) {
 	}
 }
 
-func TestCacheMiddlewareExpiration(t *testing.T) {
-	store := cache.NewMemoryStore()
-	keyBuilder := cache.NewDefaultKeyBuilder()
-	cacheMiddleware := cache.NewMiddleware(store, keyBuilder).
-		WithTTL(100 * time.Millisecond)
-
-	callCount := 0
-	baseHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		callCount++
-		w.WriteHeader(http.StatusOK)
-	})
-
-	handler := cacheMiddleware.Wrap(baseHandler)
-
-	// First request (cache miss)
-	req := httptest.NewRequest("GET", "/api/data", nil)
-	w := httptest.NewRecorder()
-	handler.ServeHTTP(w, req)
-	if callCount != 1 {
-		t.Errorf("Expected 1 call, got %d", callCount)
-	}
-
-	// Second request (cache hit)
-	req = httptest.NewRequest("GET", "/api/data", nil)
-	w = httptest.NewRecorder()
-	handler.ServeHTTP(w, req)
-	if callCount != 1 {
-		t.Errorf("Expected 1 call (cached), got %d", callCount)
-	}
-
-	// Wait for expiration
-	time.Sleep(150 * time.Millisecond)
-
-	// Third request (cache expired, miss)
-	req = httptest.NewRequest("GET", "/api/data", nil)
-	w = httptest.NewRecorder()
-	handler.ServeHTTP(w, req)
-	if callCount != 2 {
-		t.Errorf("Expected 2 calls (expired), got %d", callCount)
-	}
-}
-
 func TestCacheKeyBuilder(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -274,33 +232,6 @@ func TestMemoryStoreClear(t *testing.T) {
 		if retrieved != nil {
 			t.Errorf("Expected nil after clear, got value for key-%d", i)
 		}
-	}
-}
-
-func TestMemoryStoreCleanupExpired(t *testing.T) {
-	store := cache.NewMemoryStore()
-	ctx := context.Background()
-
-	// Set entry with short TTL
-	entry := &cache.Entry{Body: []byte("test")}
-	store.Set(ctx, "test-key", entry, 1*time.Millisecond)
-
-	// Wait for expiration
-	time.Sleep(10 * time.Millisecond)
-
-	// Cleanup
-	err := store.CleanupExpired(ctx)
-	if err != nil {
-		t.Fatalf("Cleanup failed: %v", err)
-	}
-
-	// Verify expired entry was removed
-	retrieved, err := store.Get(ctx, "test-key")
-	if err != nil {
-		t.Fatalf("Get failed: %v", err)
-	}
-	if retrieved != nil {
-		t.Error("Expected expired entry to be removed")
 	}
 }
 

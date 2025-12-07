@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"github.com/jmoiron/sqlx"
 
 	"github.com/titpetric/etl/server/config"
@@ -121,9 +121,17 @@ func (h *Handler) prepareQueryParams(r *http.Request) map[string]any {
 	for k, v := range h.Parameters {
 		queryParams[k] = v
 	}
-	for k, v := range mux.Vars(r) {
-		queryParams[k] = v
+
+	// Get path parameters from chi
+	rctx := chi.RouteContext(r.Context())
+	if rctx != nil {
+		for i, key := range rctx.URLParams.Keys {
+			if i < len(rctx.URLParams.Values) {
+				queryParams[key] = rctx.URLParams.Values[i]
+			}
+		}
 	}
+
 	for k, v := range r.URL.Query() {
 		queryParams[k] = v[0]
 	}

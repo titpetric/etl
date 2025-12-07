@@ -10,7 +10,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"testing"
-	"time"
 )
 
 func TestUsersAPI(t *testing.T) {
@@ -49,9 +48,6 @@ func TestUsersAPI(t *testing.T) {
 		serverCmd.Process.Kill()
 		serverCmd.Wait()
 	})
-
-	// Wait for server to start
-	time.Sleep(2 * time.Second)
 
 	// Run venom tests
 	venomCmd := exec.Command("venom", "run", "users-test.yml")

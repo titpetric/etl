@@ -40,13 +40,5 @@ func (m *Module) Stop(ctx context.Context) error {
 
 // Mount registers the ETL routes on the router.
 func (m *Module) Mount(ctx context.Context, r platform.Router) error {
-	etlHandler, err := handler.ServerWithEndpoints(m.config, m.config.Endpoints)
-	if err != nil {
-		return err
-	}
-
-	// Mount the ETL handler at the root path
-	r.Mount("/", etlHandler)
-
-	return nil
+	return handler.Mount(r, m.config, m.config.Endpoints)
 }

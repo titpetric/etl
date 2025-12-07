@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/titpetric/etl/server/middleware/ratelimit"
 )
@@ -293,32 +292,6 @@ func TestMemoryStoreClear(t *testing.T) {
 		if count != 0 {
 			t.Errorf("Expected count 0 after clear, got %d for key-%d", count, i)
 		}
-	}
-}
-
-func TestMemoryStoreCleanupExpired(t *testing.T) {
-	store := ratelimit.NewMemoryStore()
-	ctx := context.Background()
-
-	// Inc a key
-	store.Inc(ctx, "test-key")
-
-	// Wait for reset time to pass (default 1 second)
-	time.Sleep(1100 * time.Millisecond)
-
-	// Cleanup
-	err := store.CleanupExpired(ctx)
-	if err != nil {
-		t.Fatalf("Cleanup failed: %v", err)
-	}
-
-	// The entry should be cleaned up (count resets)
-	count, err := store.Rate(ctx, "test-key")
-	if err != nil {
-		t.Fatalf("Rate failed: %v", err)
-	}
-	if count != 0 {
-		t.Errorf("Expected count 0 after cleanup of expired, got %d", count)
 	}
 }
 

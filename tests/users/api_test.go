@@ -11,6 +11,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
+
 	"github.com/titpetric/platform"
 
 	"github.com/titpetric/etl/server"

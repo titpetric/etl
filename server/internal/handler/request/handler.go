@@ -11,7 +11,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
+
 	"github.com/titpetric/platform"
 	"github.com/titpetric/vuego"
 
@@ -154,19 +155,26 @@ func (h *Handler) renderTemplateResponse(ctx context.Context, w io.Writer, data 
 // buildUpstreamPath constructs the upstream request path by substituting path parameters.
 // Supports brace syntax: /api/users/{id}
 func (h *Handler) buildUpstreamPath(r *http.Request, pattern string) string {
-	vars := mux.Vars(r)
+	// Get route context from chi
+	rctx := chi.RouteContext(r.Context())
+	if rctx == nil {
+		return pattern
+	}
 
 	// Replace {param} with actual values
-	for key, value := range vars {
-		placeholder := "{" + key + "}"
-		pattern = strings.ReplaceAll(pattern, placeholder, value)
+	for i, key := range rctx.URLParams.Keys {
+		if i < len(rctx.URLParams.Values) {
+			placeholder := "{" + key + "}"
+			pattern = strings.ReplaceAll(pattern, placeholder, rctx.URLParams.Values[i])
+		}
 	}
 
 	// Also support :param syntax for consistency
 	re := regexp.MustCompile(`:(\w+)`)
 	pattern = re.ReplaceAllStringFunc(pattern, func(match string) string {
 		paramName := match[1:] // Remove leading ':'
-		if value, ok := vars[paramName]; ok {
+		value := chi.URLParam(r, paramName)
+		if value != "" {
 			return value
 		}
 		return match

@@ -48,9 +48,6 @@ type Endpoint struct {
 	// Methods contains the HTTP request methods. If omitted, all methods are considered.
 	Methods []string `yaml:"methods"`
 
-	// Paths contains multiple paths and methods for the handler.
-	Paths []Path `yaml:"paths"`
-
 	// Handler contains configuration related to the particular handler for the request.
 	Handler Handler `yaml:"handler"`
 }

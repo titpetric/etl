@@ -3,10 +3,9 @@ package handler
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"strings"
 
-	"github.com/gorilla/mux"
+	"github.com/titpetric/platform"
 
 	"github.com/titpetric/etl/server/config"
 	"github.com/titpetric/etl/server/internal"
@@ -17,14 +16,8 @@ import (
 	_ "github.com/titpetric/etl/server/internal/handler/sql"
 )
 
-// Server sets up the HTTP router based on the given endpoints and returns an http.Handler.
-func Server(conf *config.Config) (http.Handler, error) {
-	return ServerWithEndpoints(conf, conf.Endpoints)
-}
-
-// ServerWithEndpoints uses the []*config.Endpoint arguments to return a http.Handler.
-func ServerWithEndpoints(conf *config.Config, endpoints []*config.Endpoint) (http.Handler, error) {
-	router := mux.NewRouter()
+// Mount uses the []*config.Endpoint arguments to populate routes.
+func Mount(router platform.Router, conf *config.Config, endpoints []*config.Endpoint) error {
 	registeredHandlers := model.Handlers()
 
 	for idx, endpoint := range endpoints {
@@ -38,37 +31,24 @@ func ServerWithEndpoints(conf *config.Config, endpoints []*config.Endpoint) (htt
 
 		handler, err := factory.Handler(conf, endpoint)
 		if err != nil {
-			return nil, fmt.Errorf("error in handler %s: %w", endpoint.Handler.Type, err)
+			return fmt.Errorf("error in handler %s: %w", endpoint.Handler.Type, err)
 		}
 
-		if len(endpoint.Paths) > 0 {
-			// individual path matches and methods
-			for _, p := range endpoint.Paths {
-				methods := "ANY"
-				if len(p.Methods) > 0 {
-					methods = strings.Join(p.Methods, ", ")
-				}
+		methods := strings.Join(endpoint.Methods, ", ")
+		if methods == "" {
+			methods = "ANY"
+		}
 
-				// Log route information
-				log.Printf("%s (methods: %s, handler: %s, properties: %s)", p.Path, methods, handlerType, string(internal.Marshal(handler)))
+		log.Printf("%s (methods: %s, handler: %s, properties: %s)", endpoint.Path, methods, handlerType, string(internal.Marshal(handler)))
 
-				router.Handle(p.Path, handler).Methods(p.Methods...)
-			}
+		if len(endpoint.Methods) == 0 {
+			router.Handle(endpoint.Path, handler)
 		} else {
-			// Log route information
-			methods := "ANY"
-			if len(endpoint.Methods) > 0 {
-				methods = strings.Join(endpoint.Methods, ", ")
-			}
-			log.Printf("%s (methods: %s, handler: %s, properties: %s)", endpoint.Path, methods, handlerType, string(internal.Marshal(handler)))
-
-			// full path match
-			route := router.Handle(endpoint.Path, handler)
-			if len(endpoint.Methods) > 0 {
-				route.Methods(endpoint.Methods...)
+			for _, method := range endpoint.Methods {
+				router.Method(method, endpoint.Path, handler)
 			}
 		}
 	}
 
-	return router, nil
+	return nil
 }
