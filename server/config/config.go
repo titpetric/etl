@@ -1,3 +1,28 @@
+// Package config provides the configuration structure and parsing for the ETL server.
+//
+// # Configuration Structure
+//
+// The top-level configuration defines the server settings, optional storage configuration,
+// and a list of endpoints. Each endpoint routes requests to a specific handler.
+//
+// # Example
+//
+//	```yaml
+//	server:
+//	  http: ":3000"
+//	  grpc: ":50051"
+//	  features:
+//	    feature_flag: true
+//	storage:
+//	  driver: pgx
+//	  dsn: "postgres://localhost/db"
+//	endpoints:
+//	  - path: /api
+//	    methods: [GET, POST]
+//	    handler:
+//	      driver: http
+//	      url: "http://backend:8080"
+//	```
 package config
 
 // Config represents the overall configuration structure, which includes a server and multiple endpoints.

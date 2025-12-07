@@ -1,6 +1,11 @@
 ---
 version: "3"
 
+vars:
+  goversion:
+    sh: go env GOVERSION
+  toolchain: '{{.goversion}}+auto'
+
 env:
   CGO_ENABLED: 0
 
@@ -41,12 +46,21 @@ tasks:
     desc: "Format, lint, test, and build"
     env:
       CGO_ENABLED: 1
+      GOTOOLCHAIN: '{{.toolchain}}'
     cmds:
       - goimports -w .
       - go fmt ./...
       - go mod tidy
-      - go test -race ./...
+      - go test -race -count 1 -cover -coverpkg=./... -coverprofile=pkg.cov ./...
       - go build ./cmd/...
+
+  test:cover:
+    desc: "Run tests and generate documentation/coverage reports"
+    env:
+      CGO_ENABLED: 1
+    deps: ['test']
+    cmds:
+      - task: cover
 
   test:test-petstore:
     desc: "Run petstore integration tests"
@@ -65,3 +79,16 @@ tasks:
     cmds:
       - task test:test-petstore
       - task test:test-users
+
+  cover:
+    desc: "Generate documentation and coverage reports"
+    cmds:
+      - go-fsck extract . --include-sources
+      - schema-gen extract --include-unexported -i ./server/config/config.go -o config.schema.json --pretty-json
+      - schema-gen markdown -i config.schema.json -o docs/config.md --root Config --title "# Configuration"
+      - go-fsck extract --pretty-json ./...
+      - go tool cover -func=pkg.cov | summary coverfunc --json > pkg.cov.json
+      - go-fsck coverage -c pkg.cov.json -o go-fsck.json
+      - go-fsck coverage --template=docs/testing-coverage.md.tpl -v > docs/testing-coverage.md
+      - perl -pi -e 's/github.com\/titpetric/titpetric/g' docs/testing-coverage.md
+      - rm -f config.schema.json

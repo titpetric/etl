@@ -22,6 +22,7 @@ go install github.com/titpetric/etl/cmd/etl@main
 ## Quick Navigation
 
 - **[CLI Reference](./docs/cli.md)** – Command-line tool usage, database operations, and examples
+- **[Configuration](./docs/config.md)** – Server configuration, endpoints, handlers, and options
 - **[Server Development](./docs/server.md)** – API configuration, web development, and template rendering
 
 ## Overview
