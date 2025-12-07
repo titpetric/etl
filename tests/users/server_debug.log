@@ -1,0 +1,26 @@
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 300 seconds
+2025/12/05 20:51:51 /users (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, name, email, created_at\nFROM users\nORDER BY id\n","Queries":null,"Single":false,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":300,"KeyPattern":"users:all"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 600 seconds
+2025/12/05 20:51:51 /users/{id} (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, name, email, created_at\nFROM users\nWHERE id = :id\n","Queries":null,"Single":true,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":600,"KeyPattern":"user:{id}"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 300 seconds
+2025/12/05 20:51:51 /users/{id}/orders (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, user_id, order_date, total_amount, status\nFROM orders\nWHERE user_id = :id\nORDER BY order_date DESC\n","Queries":null,"Single":false,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":300,"KeyPattern":"user:{id}:orders"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 300 seconds
+2025/12/05 20:51:51 /orders (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, user_id, order_date, total_amount, status\nFROM orders\nORDER BY order_date DESC\n","Queries":null,"Single":false,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":300,"KeyPattern":"orders:all"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 600 seconds
+2025/12/05 20:51:51 /orders/{id} (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, user_id, order_date, total_amount, status\nFROM orders\nWHERE id = :id\n","Queries":null,"Single":true,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":600,"KeyPattern":"order:{id}"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 /login (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"INSERT INTO sessions (user_id, token, expires_at)\nVALUES (:user_id, :token, datetime('now', '+24 hours'))\nRETURNING id as session_id, user_id, token, created_at, expires_at\n","Queries":null,"Single":true,"Parameters":null,"Transaction":null,"Cache":null,"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 /logout (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"DELETE FROM sessions\nWHERE id = :session_id\nRETURNING id, user_id, token\n","Queries":null,"Single":true,"Parameters":null,"Transaction":null,"Cache":null,"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Rate limiting enabled: 100 req/s with burst size 100
+2025/12/05 20:51:51 Cache enabled: TTL 300 seconds
+2025/12/05 20:51:51 /sessions/{session_id} (methods: ANY, handler: sql, properties: {"Storage":{"Driver":"sqlite","DSN":"file:test.db"},"Filename":"","Query":"SELECT id, user_id, token, created_at, expires_at\nFROM sessions\nWHERE id = :session_id\n","Queries":null,"Single":true,"Parameters":null,"Transaction":null,"Cache":{"Enabled":true,"TTLSeconds":300,"KeyPattern":"session:{session_id}"},"RateLimit":{"Enabled":true,"RequestsPerSecond":0,"BurstSize":0},"Response":null,"Features":null})
+2025/12/05 20:51:51 Starting HTTP server on address: :3000
+2025/12/05 20:51:52 cannot merge result of type []map[string]string into scope
+2025/12/05 20:51:53 Shutting down servers...
+2025/12/05 20:51:53 Servers gracefully stopped

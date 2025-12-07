@@ -1,0 +1,14 @@
+server:
+  http: ":3000"
+
+storage:
+  driver: "sqlite"
+  dsn: "file:test.db"
+
+include:
+  - etl.users.yml
+  - etl.users_write.yml
+  - etl.login.yml
+  - etl.login_write.yml
+  - etl.orders.yml
+  - etl.orders_write.yml

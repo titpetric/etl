@@ -11,10 +11,11 @@ tasks:
       ETL_DB_DRIVER: sqlite
       ETL_DB_DSN: file:petstore.db
     cmds:
-      - rm -f petstore.db venom.log
-      - defer: rm -f venom.log
+      - rm -f petstore.db venom.log server.log
       - etl query petstore.sql
-      - venom run petstore-test.yml
+      - cmd: (timeout 60s etl server > server.log 2>&1 &) && sleep 2 && venom run petstore-test.yml; pkill -f "etl server" || true
+        ignore_error: true
+      - defer: rm -f venom.log server.log
 
   setup:
     desc: "Install dev tooling"

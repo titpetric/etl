@@ -7,6 +7,7 @@ storage:
   driver: "sqlite"
 
 endpoints:
+  # Get all available pets with caching
   - path: "/pets"
     handler:
       type: "sql"
@@ -18,7 +19,18 @@ endpoints:
         WHERE status = 'available'
         ORDER BY name
         LIMIT :limit
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "pets:available"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
 
+  # Get single pet by ID with caching
   - path: "/pets/{id}"
     handler:
       type: "sql"
@@ -27,24 +39,164 @@ endpoints:
         SELECT id, name, type, age, status
         FROM pets
         WHERE id = :id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "pet:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
 
+  # Get user orders with pets (multiple joins) with caching
   - path: "/users/{id}/orders"
     handler:
       type: "sql"
       query: |
         SELECT o.id, p.name as pet_name, o.quantity, o.order_date, o.status
         FROM orders o
-        JOIN pets p ON o.pet_id = p.id
+        INNER JOIN pets p ON o.pet_id = p.id
         WHERE o.user_id = :id
         ORDER BY o.order_date DESC
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "user:{id}:orders"
+      
+      rateLimit:
+        enabled: true
+        rate: 50
+        per: "1m"
 
+  # Get single order with all related data (multiple joins)
   - path: "/orders/{id}"
     handler:
       type: "sql"
       single: true
       query: |
-        SELECT o.id, u.username, p.name as pet_name, o.quantity, o.status, o.order_date
+        SELECT 
+          o.id,
+          u.username,
+          p.name as pet_name,
+          o.quantity,
+          o.status,
+          o.order_date
         FROM orders o
-        JOIN users u ON o.user_id = u.id
-        JOIN pets p ON o.pet_id = p.id
+        INNER JOIN users u ON o.user_id = u.id
+        INNER JOIN pets p ON o.pet_id = p.id
         WHERE o.id = :id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "order:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Create order with transactional support
+  - path: "/orders"
+    methods: [POST]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        INSERT INTO orders (user_id, pet_id, quantity, status, order_date)
+        VALUES (:user_id, :pet_id, :quantity, 'pending', CURRENT_TIMESTAMP)
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 20
+        per: "1m"
+
+  # Update order status with transactional support
+  - path: "/orders/{id}/status"
+    methods: [PUT]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        UPDATE orders
+        SET status = :status
+        WHERE id = :id
+      
+      transaction:
+        enabled: true
+        retries: 2
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 20
+        per: "1m"
+
+  # Create or list users with caching
+  - path: "/users"
+    handler:
+      type: "sql"
+      query: |
+        SELECT id, username, email, created_at
+        FROM users
+        ORDER BY username
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "users:all"
+      
+      rateLimit:
+        enabled: true
+        rate: 50
+        per: "1m"
+
+  # Get single user by ID with caching
+  - path: "/users/{id}"
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT id, username, email, created_at
+        FROM users
+        WHERE id = :id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "user:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Dashboard: get summary statistics with caching
+  - path: "/dashboard/stats"
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT 
+          (SELECT COUNT(*) FROM pets) as total_pets,
+          (SELECT COUNT(*) FROM users) as total_users,
+          (SELECT COUNT(*) FROM orders) as total_orders,
+          (SELECT COUNT(*) FROM orders WHERE status = 'completed') as completed_orders
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "dashboard:stats"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"

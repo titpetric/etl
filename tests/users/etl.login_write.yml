@@ -1,0 +1,42 @@
+endpoints:
+  # Command: Login user
+  - path: "/login"
+    methods: [POST]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        INSERT INTO sessions (user_id, token, expires_at)
+        VALUES (:user_id, :token, datetime('now', '+24 hours'))
+        RETURNING id as session_id, user_id, token
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 50
+        per: "1m"
+
+  # Command: Logout user (delete session)
+  - path: "/logout"
+    methods: [POST]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        DELETE FROM sessions
+        WHERE id = :session_id
+        RETURNING id, user_id
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 50
+        per: "1m"

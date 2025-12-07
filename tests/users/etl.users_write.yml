@@ -1,0 +1,64 @@
+endpoints:
+  # Command: Create user
+  - path: "/api/users"
+    methods: [POST]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        INSERT INTO users (name, email)
+        VALUES (:name, :email)
+        RETURNING id, name, email, created_at
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 20
+        per: "1m"
+
+  # Command: Update user
+  - path: "/api/users/{id}"
+    methods: [PUT]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        UPDATE users
+        SET name = :name, email = :email
+        WHERE id = :id
+        RETURNING id, name, email, created_at
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 20
+        per: "1m"
+
+  # Command: Delete user
+  - path: "/api/users/{id}"
+    methods: [DELETE]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        DELETE FROM users
+        WHERE id = :id
+        RETURNING id, name, email
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 20
+        per: "1m"

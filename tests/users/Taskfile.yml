@@ -1,0 +1,25 @@
+---
+version: "3"
+
+env:
+  CGO_ENABLED: 0
+
+tasks:
+  default:
+    desc: "Run etl server tests with randomized temporary databases"
+    cmds:
+      - go test -v -count 1 -timeout 120s
+
+  manual:
+    desc: "Manual setup with file-based DB for debugging"
+    env:
+      ETL_DB_DRIVER: sqlite
+    cmds:
+      - defer: rm -f test.db
+      - rm -f test.db
+      - etl query users.sql
+
+  setup:
+    desc: "Install dev tooling"
+    cmds:
+      - curl -s https://github.com/ovh/venom/releases/download/v1.2.0/venom.linux-amd64 -L -o /usr/local/bin/venom && chmod +x /usr/local/bin/venom

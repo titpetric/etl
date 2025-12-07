@@ -1,0 +1,21 @@
+endpoints:
+  # Command: Create order
+  - path: "/orders"
+    methods: [POST]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        INSERT INTO orders (user_id, total_amount, status)
+        VALUES (:user_id, :total_amount, :status)
+        RETURNING id, user_id, total_amount, status, order_date as created_at
+      
+      transaction:
+        enabled: true
+        retries: 3
+        retryDelayMs: 100
+      
+      rateLimit:
+        enabled: true
+        rate: 10
+        per: "1m"

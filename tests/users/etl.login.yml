@@ -1,0 +1,21 @@
+endpoints:
+  # Query: Get session by ID
+  - path: "/sessions/{id}"
+    methods: [GET]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT id, user_id, token
+        FROM sessions
+        WHERE id = :id AND expires_at > datetime('now')
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "session:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"

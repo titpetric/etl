@@ -1,0 +1,93 @@
+endpoints:
+  # Query: Get all users as JSON
+  - path: "/api/users"
+    methods: [GET]
+    handler:
+      type: "sql"
+      query: |
+        SELECT id, name, email, created_at
+        FROM users
+        ORDER BY id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "users:all"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Query: Get single user as JSON
+  - path: "/api/users/{id}"
+    methods: [GET]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT id, name, email, created_at
+        FROM users
+        WHERE id = :id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "user:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Query: Get all users as HTML (calls /api/users and renders as VueGo template)
+  - path: "/users"
+    methods: [GET]
+    handler:
+      type: "request"
+      request:
+        - path: "/api/users"
+          as: users
+      response:
+        headers:
+          "Content-Type": "text/html; charset=utf-8"
+        template: |
+          <h1>Users List</h1>
+          <table border="1" cellpadding="8">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.created_at }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+  # Query: Get single user as HTML (calls /api/users/{id} and renders as VueGo template)
+  - path: "/users/{id}"
+    methods: [GET]
+    handler:
+      type: "request"
+      request:
+        - path: "/api/users/{id}"
+          as: user
+      response:
+        headers:
+          "Content-Type": "text/html; charset=utf-8"
+        template: |
+          <h1>User Details</h1>
+          <div style="border: 1px solid #ccc; padding: 20px; max-width: 500px;">
+            <p><strong>ID:</strong> {{ user.id }}</p>
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Created At:</strong> {{ user.created_at }}</p>
+          </div>

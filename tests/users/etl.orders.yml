@@ -1,0 +1,70 @@
+endpoints:
+  # Query: Get all orders
+  - path: "/orders"
+    methods: [GET]
+    handler:
+      type: "sql"
+      query: |
+        SELECT o.id, o.user_id, o.total_amount, o.order_date as created_at, o.status
+        FROM orders o
+        ORDER BY o.order_date DESC
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "orders:all"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Query: Get single order
+  - path: "/orders/{id}"
+    methods: [GET]
+    handler:
+      type: "sql"
+      single: true
+      query: |
+        SELECT
+          o.id,
+          o.user_id,
+          u.name as user_name,
+          u.email as user_email,
+          o.total_amount,
+          o.status,
+          o.order_date as created_at
+        FROM orders o
+        INNER JOIN users u ON o.user_id = u.id
+        WHERE o.id = :id
+      
+      cache:
+        enabled: true
+        ttlSeconds: 600
+        keyPattern: "order:{id}"
+      
+      rateLimit:
+        enabled: true
+        rate: 100
+        per: "1m"
+
+  # Query: Get user orders
+  - path: "/users/{user_id}/orders"
+    methods: [GET]
+    handler:
+      type: "sql"
+      query: |
+        SELECT o.id, o.total_amount, o.status, o.order_date as created_at
+        FROM orders o
+        WHERE o.user_id = :user_id
+        ORDER BY o.order_date DESC
+      
+      cache:
+        enabled: true
+        ttlSeconds: 300
+        keyPattern: "user:{user_id}:orders"
+      
+      rateLimit:
+        enabled: true
+        rate: 50
+        per: "1m"
