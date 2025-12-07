@@ -1,7 +1,7 @@
 # ETL - SQL-First API & Web Development Framework
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/titpetric/etl)](https://goreportcard.com/report/github.com/titpetric/etl)
-![Coverage](https://img.shields.io/badge/coverage-31.7%25-orange)
+![Coverage](https://img.shields.io/badge/coverage-36.3%25-yellowgreen)
 [![GoDoc](https://pkg.go.dev/badge/github.com/titpetric/etl.svg)](https://pkg.go.dev/github.com/titpetric/etl)
 
 **ETL** is a no-code SQL-oriented framework.
