@@ -18,7 +18,7 @@ type Handler struct {
 
 	// Request specifies the upstream request handler path to invoke (for request type handlers).
 	// Supports path parameters with brace syntax: /api/users/{id}
-	Request *Request `yaml:"request,omitempty"`
+	Request []*Request `yaml:"request,omitempty"`
 
 	// Query is a single SQL query (deprecated, use Queries instead).
 	Query string `yaml:"query,omitempty"`
@@ -110,14 +110,20 @@ type RateLimit struct {
 
 // Request configures the request format and headers.
 type Request struct {
-	// URL is the endpoint url to invoke.
-	URL string `yaml:"url"`
+	// Path is the endpoint url to invoke.
+	Path string `yaml:"path"`
+
+	// As is the key for the decoded json value
+	As string `yaml:"as"`
 
 	// Method sets the request method. Default to GET.
 	Method string `yaml:"method,omitempty"`
 
 	// Headers are custom HTTP request headers.
 	Headers map[string]string `yaml:"headers,omitempty"`
+
+	// Body is a custom HTTP request body.
+	Body string `yaml:"body,omitempty"`
 }
 
 // Response configures the response format and headers.

@@ -18,7 +18,7 @@ func benchLoad(tb *testing.B, load func(string) (*Config, error)) *Config {
 
 func benchmarkLoaderFunc(cache Cache) func(b *testing.B) {
 	return func(b *testing.B) {
-		loader := NewConfigLoader(cache)
+		loader := New(cache)
 		b.Run(cache.String(), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				benchLoad(b, loader.Load)

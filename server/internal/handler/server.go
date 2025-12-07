@@ -13,6 +13,7 @@ import (
 	"github.com/titpetric/etl/server/internal/handler/model"
 
 	_ "github.com/titpetric/etl/server/internal/handler/query"
+	_ "github.com/titpetric/etl/server/internal/handler/request"
 	_ "github.com/titpetric/etl/server/internal/handler/sql"
 )
 
@@ -55,10 +56,17 @@ func ServerWithEndpoints(conf *config.Config, endpoints []*config.Endpoint) (htt
 			}
 		} else {
 			// Log route information
-			log.Printf("%s (methods: ANY, handler: %s, properties: %s)", endpoint.Path, handlerType, string(internal.Marshal(handler)))
+			methods := "ANY"
+			if len(endpoint.Methods) > 0 {
+				methods = strings.Join(endpoint.Methods, ", ")
+			}
+			log.Printf("%s (methods: %s, handler: %s, properties: %s)", endpoint.Path, methods, handlerType, string(internal.Marshal(handler)))
 
 			// full path match
-			router.Handle(endpoint.Path, handler)
+			route := router.Handle(endpoint.Path, handler)
+			if len(endpoint.Methods) > 0 {
+				route.Methods(endpoint.Methods...)
+			}
 		}
 	}
 
