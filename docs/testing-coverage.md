@@ -27,11 +27,10 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server/internal/handler/model       | 100.00%  | 2         | 18    |
 | ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 123   |
 | ✅      | titpetric/etl/server/internal/handler/query/model | 71.40%   | 2         | 12    |
-| ✅      | titpetric/etl/server/internal/handler/request     | 81.89%   | 36        | 181   |
+| ✅      | titpetric/etl/server/internal/handler/request     | 81.81%   | 36        | 180   |
 | ❌      | titpetric/etl/server/internal/handler/sql         | 42.94%   | 178       | 726   |
 | ✅      | titpetric/etl/server/middleware/cache             | 83.27%   | 60        | 312   |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | 77.20%   | 50        | 329   |
-| ❌      | titpetric/etl/tests/users                         | 0.00%    | 9         | 55    |
 
 ## Functions
 
@@ -146,7 +145,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server/internal/handler/query       | NewHandler                       | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/internal/handler/query       | init                             | 0.00%    | 0         |
 | ✅      | titpetric/etl/server/internal/handler/query/model | Load                             | 71.40%   | 2         |
-| ✅      | titpetric/etl/server/internal/handler/request     | Handler.EvaluateRequest          | 83.90%   | 14        |
+| ✅      | titpetric/etl/server/internal/handler/request     | Handler.EvaluateRequest          | 83.30%   | 14        |
 | ✅      | titpetric/etl/server/internal/handler/request     | Handler.Handler                  | 81.20%   | 3         |
 | ❌      | titpetric/etl/server/internal/handler/request     | Handler.ServeHTTP                | 50.00%   | 12        |
 | ✅      | titpetric/etl/server/internal/handler/request     | Handler.Type                     | 100.00%  | 0         |
@@ -232,6 +231,4 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server/middleware/ratelimit         | max                              | 100.00%  | 1         |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | responseWrapper.Flush            | 0.00%    | 1         |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | responseWrapper.Hijack           | 0.00%    | 1         |
-| ❌      | titpetric/etl/tests/users                         | getMethod                        | 0.00%    | 4         |
-| ❌      | titpetric/etl/tests/users                         | main                             | 0.00%    | 5         |
 

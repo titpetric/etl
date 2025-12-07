@@ -57,27 +57,18 @@ cache:
   keyPattern: "users:all"
 ```
 
-## Running the Example
+## Running the Tests
 
 Validate the configuration loads correctly:
 ```bash
 cd tests/users
-go run validate.go
+go test ./...
 ```
 
-Expected output:
-```
-Total Endpoints: 9
-  [1] /users (methods: GET)
-  [2] /users/{id} (methods: GET)
-  [3] /users (methods: POST)
-  [4] /users-html (methods: GET)
-  [5] /users-html/{id} (methods: GET)
-  [6] /orders (methods: GET)
-  [7] /orders/{id} (methods: GET)
-  [8] /users/{user_id}/orders (methods: GET)
-  [9] /orders (methods: POST)
-```
+This runs the `TestValidateConfig` test which verifies:
+- Configuration loads successfully with all includes
+- Expected 14 endpoints are present (8 read + 6 write with CQRS pattern)
+- All endpoints have valid paths and HTTP methods
 
 ## Endpoints Overview
 

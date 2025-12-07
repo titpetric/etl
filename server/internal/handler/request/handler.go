@@ -66,7 +66,6 @@ func (h *Handler) EvaluateRequest(r *http.Request) (map[string]any, error) {
 
 		upstreamPath := h.buildUpstreamPath(r, reqSpec.Path)
 		upstreamURL := baseURL + upstreamPath
-		log.Println("request:", method, upstreamURL)
 
 		// --- Updated: use NewRequestWithContext ---
 		upstreamReq, err := http.NewRequestWithContext(ctx, method, upstreamURL, body)
