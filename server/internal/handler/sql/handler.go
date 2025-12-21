@@ -46,6 +46,7 @@ type Handler struct {
 	limiter    *rate.Limiter
 	cacheStore map[string]*cacheEntry
 	cacheMutex sync.RWMutex
+	tpl        vuego.Template
 }
 
 // cacheEntry stores cached response with expiration time
@@ -56,7 +57,9 @@ type cacheEntry struct {
 
 // NewHandler creates a new Handler.
 func NewHandler() *Handler {
-	return &Handler{}
+	return &Handler{
+		tpl: vuego.New(vuego.WithLessProcessor()),
+	}
 }
 
 // ServeHTTP handles the request and executes the query pipeline.
@@ -740,8 +743,7 @@ func (h *Handler) renderTemplateResponse(w http.ResponseWriter, result interface
 	}
 
 	// Load the template and render directly from the template string
-	tpl := vuego.Load(newTemplateFS("template.vuego"))
-	if err := tpl.Fill(data).RenderString(context.Background(), w, h.Response.Template); err != nil {
+	if err := h.tpl.New().Fill(data).RenderString(context.Background(), w, h.Response.Template); err != nil {
 		log.Printf("Error rendering template: %v", err)
 		http.Error(w, "Template rendering failed", http.StatusInternalServerError)
 		return

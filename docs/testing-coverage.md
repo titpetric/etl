@@ -28,7 +28,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 123   |
 | ✅      | titpetric/etl/server/internal/handler/query/model | 71.40%   | 2         | 12    |
 | ✅      | titpetric/etl/server/internal/handler/request     | 81.81%   | 36        | 180   |
-| ❌      | titpetric/etl/server/internal/handler/sql         | 42.94%   | 180       | 728   |
+| ❌      | titpetric/etl/server/internal/handler/sql         | 42.94%   | 180       | 729   |
 | ✅      | titpetric/etl/server/middleware/cache             | 83.27%   | 60        | 312   |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | 77.20%   | 50        | 329   |
 
