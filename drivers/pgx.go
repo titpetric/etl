@@ -14,12 +14,14 @@ import (
 )
 
 type Pgx struct {
-	db *sqlx.DB
+	db     *sqlx.DB
+	driver string
 }
 
-func NewPgx(db *sqlx.DB) (*Pgx, error) {
+func NewPgx(driver string, db *sqlx.DB) (*Pgx, error) {
 	return &Pgx{
-		db: db,
+		db:     db,
+		driver: driver,
 	}, nil
 }
 

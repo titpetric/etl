@@ -15,13 +15,15 @@ import (
 
 // Sqlite represents a SQLite driver using sqlx.
 type Sqlite struct {
-	db *sqlx.DB
+	db     *sqlx.DB
+	driver string
 }
 
 // NewSqlite creates a new SQLite driver instance using the provided *sqlx.DB.
-func NewSqlite(db *sqlx.DB) (*Sqlite, error) {
+func NewSqlite(driver string, db *sqlx.DB) (*Sqlite, error) {
 	return &Sqlite{
-		db: db,
+		db:     db,
+		driver: driver,
 	}, nil
 }
 

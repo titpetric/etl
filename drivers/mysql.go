@@ -1,11 +1,13 @@
 package drivers
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"strings"
 
+	"github.com/go-bridget/mig/db/introspect"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/exp/maps"
 
@@ -14,17 +16,34 @@ import (
 )
 
 type MySQL struct {
-	db *sqlx.DB
+	driver string
+	db     *sqlx.DB
 }
 
-func NewMySQL(db *sqlx.DB) (*MySQL, error) {
+func NewMySQL(driver string, db *sqlx.DB) (*MySQL, error) {
 	return &MySQL{
-		db: db,
+		db:     db,
+		driver: driver,
 	}, nil
 }
 
 func (m *MySQL) Tables() ([]model.Record, error) {
-	return m.Query("SELECT table_name FROM information_schema.tables where table_schema=database()")
+	ctx := context.Background()
+	describer, err := introspect.NewDescriber(m.driver)
+	if err != nil {
+		return nil, err
+	}
+
+	tables, err := describer.ListTables(ctx, m.db)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([]model.Record, 0, len(tables))
+	for _, table := range tables {
+		results = append(results, table.Map())
+	}
+	return results, nil
 }
 
 func (m *MySQL) Insert(table string, records []model.RecordInput, params ...string) (int64, error) {

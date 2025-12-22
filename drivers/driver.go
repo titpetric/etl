@@ -11,11 +11,11 @@ import (
 func New(driver string, db *sqlx.DB) (model.Driver, error) {
 	switch driver {
 	case "pgx":
-		return NewPgx(db)
+		return NewPgx(driver, db)
 	case "mysql":
-		return NewMySQL(db)
+		return NewMySQL(driver, db)
 	case "sqlite":
-		return NewSqlite(db)
+		return NewSqlite(driver, db)
 	default:
 		return nil, fmt.Errorf("unknown driver: %s", driver)
 	}
