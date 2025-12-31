@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-bridget/mig/db"
 	"github.com/go-chi/chi/v5"
 	"github.com/jmoiron/sqlx"
 
@@ -78,17 +79,19 @@ func (h *Handler) Handler(conf *config.Config, endpoint *config.Endpoint) (http.
 }
 
 func (h *Handler) eval(conf *model.Config, queryParams map[string]any) (map[string]any, error) {
-	db, err := sqlx.Open(h.Storage.Driver, h.Storage.DSN)
+	driver := db.DeriveDriverFromDSN(h.Storage.DSN)
+	dsn := db.CleanDSN(h.Storage.DSN)
+	sqldb, err := sqlx.Open(driver, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to the database: %w", err)
 	}
-	defer db.Close()
+	defer sqldb.Close()
 
 	results := make(map[string]any)
 
 	for _, response := range conf.Response {
 		// Execute the SQL query with proper parameter handling
-		rows, err := db.NamedQuery(response.Query.SQL, queryParams)
+		rows, err := sqldb.NamedQuery(response.Query.SQL, queryParams)
 		if err != nil {
 			return nil, fmt.Errorf("error executing SQL query: %w", err)
 		}

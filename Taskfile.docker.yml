@@ -1,0 +1,61 @@
+---
+version: "3"
+
+tasks:
+  build:
+    desc: "Build docker image"
+    cmds:
+      - docker compose build
+
+  pull:
+    desc: "Pull docker images"
+    cmds:
+      - docker compose pull
+
+  status:
+    aliases: [ps]
+    desc: "Environment status"
+    cmds:
+      - docker compose ps
+
+  up:
+    desc: "Bring up MySQL and PostgreSQL for testing"
+    cmds:
+      - docker compose up -d --remove-orphans --wait
+
+  down:
+    desc: "Shut down services"
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: "Tail container logs (live)"
+    cmds:
+      - docker compose logs --tail=10 -f
+
+  test:datetime:sqlite:
+    desc: "Run datetime tests for SQLite"
+    dir: tests/time
+    cmds:
+      - bash test-sqlite.sh
+
+  test:datetime:mysql:
+    desc: "Run datetime tests for MySQL (requires docker services)"
+    dir: tests/time
+    deps: [up]
+    cmds:
+      - bash test-mysql.sh
+
+  test:datetime:postgres:
+    desc: "Run datetime tests for PostgreSQL (requires docker services)"
+    dir: tests/time
+    deps: [up]
+    cmds:
+      - bash test-postgres.sh
+
+  test:datetime:all:
+    desc: "Run all datetime tests (SQL, MySQL, PostgreSQL)"
+    cmds:
+      - task: test:datetime:sqlite
+      - task: test:datetime:mysql
+      - task: test:datetime:postgres

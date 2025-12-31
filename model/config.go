@@ -4,12 +4,12 @@ import (
 	"os"
 	"strings"
 
+	"github.com/go-bridget/mig/db"
 	"github.com/spf13/pflag"
 )
 
 type Config struct {
 	DSN    string
-	Driver string
 	Folder string
 
 	Verbose bool
@@ -29,8 +29,7 @@ func NewFlagSet(name string) *pflag.FlagSet {
 
 func (c *Config) ParseFlags() ([]string, error) {
 	flagSet := NewFlagSet("Config")
-	flagSet.StringVar(&c.DSN, "db-dsn", os.Getenv("ETL_DB_DSN"), "Database DSN")
-	flagSet.StringVar(&c.Driver, "db-driver", os.Getenv("ETL_DB_DRIVER"), "Database Driver")
+	flagSet.StringVar(&c.DSN, "db-dsn", os.Getenv("ETL_DB_DSN"), "Database DSN (mysql://, postgres://, sqlite://, or driver-specific format)")
 	flagSet.StringVarP(&c.Folder, "folder", "f", "output", "Folder with outputs")
 	flagSet.BoolVarP(&c.Verbose, "verbose", "v", false, "Folder with outputs")
 	flagSet.BoolVarP(&c.Quiet, "quiet", "q", false, "Quiet output")
@@ -51,14 +50,18 @@ func (c *Config) GetDSN() string {
 	if c.DSN == "" {
 		return ":memory:"
 	}
-	return c.DSN
+	dsn := c.DSN
+	// Use mig's DSN cleaning which handles all driver-specific formatting
+	return db.CleanDSN(dsn)
 }
 
+// GetDriver returns the database driver derived from the DSN connection string.
 func (c *Config) GetDriver() string {
-	if c.Driver == "" {
+	if c.DSN == "" {
 		return "sqlite"
 	}
-	return c.Driver
+	// Use mig's driver derivation logic
+	return db.DeriveDriverFromDSN(c.DSN)
 }
 
 // filterKnownArgs separates known flags from unknown ones

@@ -1,0 +1,16 @@
+include:
+  - docker/service/mysql-percona.yml
+  - docker/service/postgres.yml
+
+services:
+  etl:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - $PWD/tests/petstore:/app
+    depends_on:
+      mysql-percona:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy

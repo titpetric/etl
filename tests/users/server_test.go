@@ -24,8 +24,7 @@ func TestUsersAPI(t *testing.T) {
 	// Setup database
 	cmd := exec.Command("etl", "query", "users.sql")
 	cmd.Env = append(os.Environ(),
-		"ETL_DB_DRIVER=sqlite",
-		fmt.Sprintf("ETL_DB_DSN=file:%s", dbFile),
+		fmt.Sprintf("ETL_DB_DSN=sqlite://file:%s", dbFile),
 	)
 	if err := cmd.Run(); err != nil {
 		t.Fatalf("failed to setup database: %v", err)
@@ -34,8 +33,7 @@ func TestUsersAPI(t *testing.T) {
 	// Start server
 	serverCmd := exec.Command("etl", "server")
 	serverCmd.Env = append(os.Environ(),
-		"ETL_DB_DRIVER=sqlite",
-		fmt.Sprintf("ETL_DB_DSN=file:%s", dbFile),
+		fmt.Sprintf("ETL_DB_DSN=sqlite://file:%s", dbFile),
 	)
 	serverCmd.Stdout = os.Stdout
 	serverCmd.Stderr = os.Stderr

@@ -19,20 +19,17 @@ Set environment variables to connect to your database:
 
 ### SQLite (Default)
 ```bash
-export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:database.db"
+export ETL_DB_DSN="sqlite://file:database.db"
 ```
 
 ### PostgreSQL
 ```bash
-export ETL_DB_DRIVER=postgres
 export ETL_DB_DSN="postgres://user:password@localhost:5432/dbname"
 ```
 
 ### MySQL
 ```bash
-export ETL_DB_DRIVER=mysql
-export ETL_DB_DSN="user:password@tcp(localhost:3306)/dbname"
+export ETL_DB_DSN="mysql://user:password@tcp(localhost:3306)/dbname"
 ```
 
 ## Creating Initial State
@@ -41,8 +38,7 @@ export ETL_DB_DSN="user:password@tcp(localhost:3306)/dbname"
 
 ```bash
 # Set up the database
-export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:myapp.db"
+export ETL_DB_DSN="sqlite://file:myapp.db"
 
 # Initialize schema from SQL file
 etl query schema.sql
@@ -190,8 +186,7 @@ See [docs/server.md](./server.md) for server configuration and API development.
 
 ```bash
 # 1. Initialize database
-export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:app.db"
+export ETL_DB_DSN="sqlite://file:app.db"
 etl query schema.sql
 
 # 2. Insert users
@@ -221,7 +216,7 @@ etl server
 
 ## Troubleshooting
 
-- **Connection errors**: Check `ETL_DB_DRIVER` and `ETL_DB_DSN` environment variables
+- **Connection errors**: Check `ETL_DB_DSN` environment variable
 - **Missing table**: Run schema initialization with `etl query schema.sql`
 - **JSON parse errors**: Validate JSON with `jq` before piping to etl
 - **SQL syntax errors**: Test queries directly in database client first, then move to .sql files

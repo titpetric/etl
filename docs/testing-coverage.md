@@ -13,22 +13,22 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 
 | Status | Package                                                      | Coverage | Cognitive | Lines |
 | ------ | ------------------------------------------------------------ | -------- | --------- | ----- |
-| ❌      | titpetric/etl/cmd/etl                             | 0.00%    | 7         | 69    |
-| ❌      | titpetric/etl/drivers                             | 0.00%    | 32        | 228   |
+| ❌      | titpetric/etl/cmd/etl                             | 0.00%    | 7         | 68    |
+| ❌      | titpetric/etl/drivers                             | 0.00%    | 35        | 249   |
 | ❌      | titpetric/etl/handlers                            | 0.00%    | 106       | 432   |
 | ❌      | titpetric/etl/internal                            | 0.00%    | 25        | 105   |
-| ❌      | titpetric/etl/model                               | 0.00%    | 25        | 99    |
+| ❌      | titpetric/etl/model                               | 0.00%    | 25        | 102   |
 | ✅      | titpetric/etl/server                              | 85.71%   | 1         | 41    |
-| ❌      | titpetric/etl/server/config                       | 58.94%   | 51        | 103   |
+| ❌      | titpetric/etl/server/config                       | 60.76%   | 46        | 96    |
 | ✅      | titpetric/etl/server/config/loader                | 89.43%   | 24        | 295   |
 | ✅      | titpetric/etl/server/internal                     | 100.00%  | 2         | 19    |
 | ✅      | titpetric/etl/server/internal/db/order            | 100.00%  | 0         | 14    |
 | ❌      | titpetric/etl/server/internal/handler             | 73.70%   | 12        | 36    |
 | ✅      | titpetric/etl/server/internal/handler/model       | 100.00%  | 2         | 18    |
-| ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 123   |
+| ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 125   |
 | ✅      | titpetric/etl/server/internal/handler/query/model | 71.40%   | 2         | 12    |
 | ✅      | titpetric/etl/server/internal/handler/request     | 81.81%   | 36        | 180   |
-| ❌      | titpetric/etl/server/internal/handler/sql         | 42.94%   | 180       | 729   |
+| ❌      | titpetric/etl/server/internal/handler/sql         | 42.99%   | 180       | 731   |
 | ✅      | titpetric/etl/server/middleware/cache             | 83.27%   | 60        | 312   |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | 77.20%   | 50        | 329   |
 
@@ -42,7 +42,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ❌      | titpetric/etl/cmd/etl                             | start                            | 0.00%    | 3         |
 | ❌      | titpetric/etl/drivers                             | MySQL.Insert                     | 0.00%    | 6         |
 | ❌      | titpetric/etl/drivers                             | MySQL.Query                      | 0.00%    | 2         |
-| ✅      | titpetric/etl/drivers                             | MySQL.Tables                     | 0.00%    | 0         |
+| ❌      | titpetric/etl/drivers                             | MySQL.Tables                     | 0.00%    | 3         |
 | ✅      | titpetric/etl/drivers                             | MySQL.insertQueryNamed           | 0.00%    | 0         |
 | ❌      | titpetric/etl/drivers                             | New                              | 0.00%    | 1         |
 | ✅      | titpetric/etl/drivers                             | NewMySQL                         | 0.00%    | 0         |
@@ -93,10 +93,10 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server                              | NewModule                        | 100.00%  | 0         |
 | ❌      | titpetric/etl/server                              | Start                            | 0.00%    | 1         |
 | ❌      | titpetric/etl/server/config                       | Config.Validate                  | 0.00%    | 2         |
-| ❌      | titpetric/etl/server/config                       | Decode                           | 61.30%   | 45        |
+| ❌      | titpetric/etl/server/config                       | Decode                           | 62.10%   | 41        |
 | ✅      | titpetric/etl/server/config                       | Handler.Decode                   | 66.70%   | 1         |
 | ✅      | titpetric/etl/server/config                       | Handler.UnmarshalYAML            | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config                       | applyStorageEnvOverrides         | 66.70%   | 3         |
+| ✅      | titpetric/etl/server/config                       | applyStorageEnvOverrides         | 75.00%   | 2         |
 | ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.Get            | 100.00%  | 1         |
 | ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.String         | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.loadAndSet     | 66.70%   | 2         |
@@ -154,7 +154,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server/internal/handler/request     | NewHandler                       | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/internal/handler/request     | init                             | 0.00%    | 0         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Handler                  | 83.80%   | 17        |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.ServeHTTP                | 69.40%   | 20        |
+| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.ServeHTTP                | 71.10%   | 20        |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Type                     | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.buildCacheKey            | 100.00%  | 2         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.collectParameters        | 87.50%   | 15        |

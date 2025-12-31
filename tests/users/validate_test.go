@@ -29,8 +29,8 @@ func TestValidateConfig(t *testing.T) {
 		t.Error("Server HTTP Address is empty")
 	}
 
-	if cfg.Storage.Driver == "" {
-		t.Error("Storage Driver is empty")
+	if cfg.Storage.DSN == "" {
+		t.Error("Storage DSN is empty")
 	}
 
 	// Validate each endpoint has methods

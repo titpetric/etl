@@ -11,7 +11,7 @@ import (
 
 // Decode unmarshals YAML data into a Config struct.
 // If fsys is provided, it will also process any included files.
-// Environment variables (ETL_DB_DRIVER, ETL_DB_DSN) override YAML config.
+// Environment variables (ETL_DB_DSN) override YAML config.
 func Decode(fsys fs.FS, data []byte) (*Config, error) {
 	cfg := &Config{}
 	err := yaml.Unmarshal(data, cfg)
@@ -61,9 +61,6 @@ func Decode(fsys fs.FS, data []byte) (*Config, error) {
 				if cfg.Storage == nil {
 					cfg.Storage = clone.Clone(includeCfg.Storage).(*Storage)
 				} else {
-					if includeCfg.Storage.Driver != "" {
-						cfg.Storage.Driver = includeCfg.Storage.Driver
-					}
 					if includeCfg.Storage.DSN != "" {
 						cfg.Storage.DSN = includeCfg.Storage.DSN
 					}
@@ -76,14 +73,10 @@ func Decode(fsys fs.FS, data []byte) (*Config, error) {
 }
 
 // applyStorageEnvOverrides applies environment variable overrides for storage configuration.
-// Environment variables: ETL_DB_DRIVER, ETL_DB_DSN
+// Environment variable: ETL_DB_DSN
 func applyStorageEnvOverrides(cfg *Config) {
 	if cfg.Storage == nil {
 		cfg.Storage = &Storage{}
-	}
-
-	if driver := os.Getenv("ETL_DB_DRIVER"); driver != "" {
-		cfg.Storage.Driver = driver
 	}
 
 	if dsn := os.Getenv("ETL_DB_DSN"); dsn != "" {

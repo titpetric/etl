@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/expr-lang/expr v1.17.7
-	github.com/go-bridget/mig v0.0.3
+	github.com/go-bridget/mig v0.1.1
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/goccy/go-yaml v1.19.1
@@ -45,7 +45,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/riandyrn/otelchi v0.12.2 // indirect
-	github.com/titpetric/lessgo v0.0.2 // indirect
+	github.com/titpetric/lessgo v0.0.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.39.0 // indirect

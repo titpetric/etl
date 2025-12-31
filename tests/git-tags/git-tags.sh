@@ -1,6 +1,5 @@
 #!/bin/bash
-export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:git-tags.db"
+export ETL_DB_DSN="sqlite://file:git-tags.db"
 
 # Clear initial db from any previous runs
 rm -f git-tags.db

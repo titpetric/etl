@@ -76,11 +76,10 @@ type Server struct {
 	Features map[string]bool `yaml:"features"`
 }
 
-// Storage type configures database Driver and DSN values.
+// Storage type configures database connection DSN.
+// The driver is automatically derived from the DSN connection string.
 type Storage struct {
-	// Driver configures the database driver to use (sqlite, mysql, pgx).
-	Driver string `yaml:"driver"`
-
-	// DSN configures the connection string for the driver.
+	// DSN configures the connection string for the database.
+	// Supports mysql://, postgres://, postgresql://, sqlite://, and driver-specific formats.
 	DSN string `yaml:"dsn"`
 }

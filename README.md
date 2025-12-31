@@ -1,17 +1,19 @@
-# ETL - SQL-First API & Web Development Framework
+# ETL - SQL-First CLI, API & Web Development Framework
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/titpetric/etl)](https://goreportcard.com/report/github.com/titpetric/etl)
 [![Testing coverage](https://img.shields.io/badge/coverage-54.2%25-yellowgreen)](./docs/testing-coverage.md)
 [![GoDoc](https://pkg.go.dev/badge/github.com/titpetric/etl.svg)](https://pkg.go.dev/github.com/titpetric/etl)
 
-**ETL** is a no-code SQL-oriented framework.
+**ETL** started out as a CLI tool to interface databases with JSON from
+the terminal. It became something more, with a server, where you can define
+API endpoints using parametrized SQL queries in a yaml configuration.
 
-ETL enables rapid development of APIs, web applications, and supports
-CQRS design.
+Currently, it provides:
 
-ETL allows you to define API endpoints declaratively in YAML, execute
-parameterized SQL queries, and serve JSON APIs or render HTML
-templates - all without writing Go code.
+- A CLI for writing/reading from databases using JSON
+- A server that uses a .yaml definition to provide APIs
+- Web development capabilities with templating from API responses (SSR)
+- CQRS support by composing definitions with `include`.
 
 ## Installation
 
@@ -57,21 +59,13 @@ Several test suites demonstrate core functionality:
 
 ## Configuration
 
-Set environment variables:
+Set environment variables with your connection/storage details:
 
-```bash
-# SQLite (default)
-export ETL_DB_DRIVER=sqlite
-export ETL_DB_DSN="file:myapp.db"
-
-# PostgreSQL
-export ETL_DB_DRIVER=postgres
-export ETL_DB_DSN="user:pass@localhost:5432/dbname"
-
-# MySQL
-export ETL_DB_DRIVER=mysql
-export ETL_DB_DSN="user:pass@tcp(localhost:3306)/dbname"
-```
+| Database    | Example DSN                                                         |
+|-------------|---------------------------------------------------------------------|
+| SQLite      | `export ETL_DB_DSN="sqlite://file:myapp.db"`                        |
+| PostgreSQL  | `export ETL_DB_DSN="postgres://user:pass@localhost:5432/dbname"     |
+| MySQL       | `export ETL_DB_DSN="mysql://user:pass@tcp(localhost:3306)/dbname"`  |
 
 ## Why ETL?
 

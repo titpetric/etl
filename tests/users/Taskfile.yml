@@ -13,7 +13,7 @@ tasks:
   manual:
     desc: "Manual setup with file-based DB for debugging"
     env:
-      ETL_DB_DRIVER: sqlite
+      ETL_DB_DSN: sqlite://file:test.db
     cmds:
       - defer: rm -f test.db
       - rm -f test.db

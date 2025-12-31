@@ -47,7 +47,6 @@ func start(ctx context.Context) error {
 
 	command := model.Command{
 		DB:      db,
-		Driver:  config.GetDriver(),
 		Name:    args[0],
 		Args:    args[1:],
 		Verbose: config.Verbose,

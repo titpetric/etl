@@ -7,8 +7,7 @@ type Command struct {
 	Name string
 	Args []string
 
-	DB     *sqlx.DB
-	Driver string
+	DB *sqlx.DB
 
 	Verbose bool
 	Quiet   bool

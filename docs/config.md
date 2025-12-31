@@ -29,13 +29,12 @@ Features contains feature flags available for conditional query execution.
 
 # Storage
 
-Storage type configures database Driver and DSN values.
-
-**Field: `Driver` (`string`)**
-Driver configures the database driver to use (sqlite, mysql, pgx).
+Storage type configures database connection DSN.
+The driver is automatically derived from the DSN connection string.
 
 **Field: `DSN` (`string`)**
-DSN configures the connection string for the driver.
+DSN configures the connection string for the database.
+Supports mysql://, postgres://, postgresql://, sqlite://, and driver-specific formats.
 
 # Endpoint
 

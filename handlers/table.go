@@ -12,7 +12,7 @@ import (
 
 // Tables retrieves the list of tables in the current database schema along with their comments.
 func Tables(ctx context.Context, command *model.Command, _ io.Reader) error {
-	driver, err := drivers.New(command.Driver, command.DB)
+	driver, err := drivers.New(command.DB)
 	if err != nil {
 		return err
 	}

@@ -42,7 +42,7 @@ func buildInsertQuery(table string, data model.RecordInput) (string, []any) {
 }
 
 func Insert(ctx context.Context, command *model.Command, r io.Reader) error {
-	driver, err := drivers.New(command.Driver, command.DB)
+	driver, err := drivers.New(command.DB)
 	if err != nil {
 		return err
 	}

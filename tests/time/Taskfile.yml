@@ -1,0 +1,111 @@
+---
+version: "3"
+
+tasks:
+  # Default task - SQLite only (no dependencies)
+  default:
+    desc: "Run datetime portability tests for SQLite (no server required)"
+    cmds:
+      - bash test-sqlite.sh
+
+  sqlite:
+    desc: "Run datetime portability tests for SQLite"
+    cmds:
+      - bash test-sqlite.sh
+
+  # MySQL tests (requires MySQL server)
+  mysql:
+    desc: "Run datetime portability tests for MySQL (requires MySQL server)"
+    cmds:
+      - bash test-mysql.sh
+
+  postgres:
+    desc: "Run datetime portability tests for PostgreSQL (requires PostgreSQL server)"
+    cmds:
+      - bash test-postgres.sh
+
+  # Docker service management
+  docker:up:
+    desc: "Start MySQL and PostgreSQL Docker containers"
+    dir: "../.."
+    cmds:
+      - docker compose up -d --remove-orphans --wait mysql postgres
+
+  docker:down:
+    desc: "Stop MySQL and PostgreSQL Docker containers"
+    dir: "../.."
+    cmds:
+      - docker compose down
+
+  docker:status:
+    desc: "Show Docker container status"
+    dir: "../.."
+    cmds:
+      - docker compose ps
+
+  docker:logs:
+    desc: "Tail Docker container logs"
+    dir: "../.."
+    cmds:
+      - docker compose logs --tail=20 -f mysql postgres
+
+  # Combined test tasks
+  test:all:local:
+    desc: "Run all tests with available local servers (SQLite always works)"
+    cmds:
+      - task: sqlite
+
+  test:all:docker:
+    desc: "Run all tests using Docker services (SQLite + MySQL + PostgreSQL)"
+    cmds:
+      - task: docker:up
+      - task: sqlite
+      - task: mysql
+      - task: postgres
+      - task: docker:down
+
+  test:all:
+    desc: "Run all tests - alias for docker:all"
+    cmds:
+      - task: test:all:docker
+
+  # Quick aliases
+  s:
+    desc: "SQLite tests (short)"
+    cmds:
+      - task: sqlite
+
+  m:
+    desc: "MySQL tests (short)"
+    cmds:
+      - task: mysql
+
+  p:
+    desc: "PostgreSQL tests (short)"
+    cmds:
+      - task: postgres
+
+  all:
+    desc: "All tests with Docker"
+    cmds:
+      - task: test:all:docker
+
+  up:
+    desc: "Start Docker services"
+    cmds:
+      - task: docker:up
+
+  down:
+    desc: "Stop Docker services"
+    cmds:
+      - task: docker:down
+
+  status:
+    desc: "Show Docker status"
+    cmds:
+      - task: docker:status
+
+  logs:
+    desc: "Show Docker logs"
+    cmds:
+      - task: docker:logs

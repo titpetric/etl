@@ -8,8 +8,7 @@ tasks:
   default:
     desc: "Set up a server DB, run etl server"
     env:
-      ETL_DB_DRIVER: sqlite
-      ETL_DB_DSN: file:petstore.db
+      ETL_DB_DSN: sqlite://file:petstore.db
     cmds:
       - rm -f petstore.db venom.log server.log
       - etl query petstore.sql

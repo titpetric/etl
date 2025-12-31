@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/expr-lang/expr"
+	"github.com/go-bridget/mig/db"
 	"github.com/go-chi/chi/v5"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/time/rate"
@@ -85,19 +86,21 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Open the database connection
-	db, err := sqlx.Open(h.Storage.Driver, h.Storage.DSN)
+	driver := db.DeriveDriverFromDSN(h.Storage.DSN)
+	dsn := db.CleanDSN(h.Storage.DSN)
+	sqldb, err := sqlx.Open(driver, dsn)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Error connecting to the database", http.StatusInternalServerError)
 		return
 	}
-	defer db.Close()
+	defer sqldb.Close()
 
 	// Collect parameters from various sources
 	queryParams := h.collectParameters(r)
 
 	// Execute query pipeline
-	result, execErr := h.executePipeline(db, queryParams)
+	result, execErr := h.executePipeline(sqldb, queryParams)
 	if execErr != nil {
 		log.Printf("Error executing query pipeline: %v", execErr)
 		http.Error(w, "Error executing query pipeline", http.StatusInternalServerError)

@@ -1,6 +1,9 @@
 ---
 version: "3"
 
+includes:
+  docker: Taskfile.docker.yml
+
 vars:
   goversion:
     sh: go env GOVERSION

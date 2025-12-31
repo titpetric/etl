@@ -8,7 +8,10 @@ import (
 	"github.com/titpetric/etl/model"
 )
 
-func New(driver string, db *sqlx.DB) (model.Driver, error) {
+// New creates a driver instance from a database connection.
+// The driver type is determined from the database connection's DriverName().
+func New(db *sqlx.DB) (model.Driver, error) {
+	driver := db.DriverName()
 	switch driver {
 	case "pgx":
 		return NewPgx(driver, db)

@@ -29,7 +29,7 @@ func NewMySQL(driver string, db *sqlx.DB) (*MySQL, error) {
 
 func (m *MySQL) Tables() ([]model.Record, error) {
 	ctx := context.Background()
-	describer, err := introspect.NewDescriber(m.driver)
+	describer, err := introspect.NewDescriber(m.db)
 	if err != nil {
 		return nil, err
 	}
