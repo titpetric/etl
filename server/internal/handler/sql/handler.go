@@ -86,8 +86,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Open the database connection
-	driver := db.DeriveDriverFromDSN(h.Storage.DSN)
-	dsn := db.CleanDSN(h.Storage.DSN)
+	driver, dsn := db.ParseDSN(h.Storage.DSN)
 	sqldb, err := sqlx.Open(driver, dsn)
 	if err != nil {
 		log.Println(err)

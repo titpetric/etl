@@ -4,7 +4,8 @@ import (
 	"github.com/titpetric/etl/server/config"
 )
 
-// Config is an alias to avoid import pollution.
+// Config aliases config.Config.
 type Config = config.Config
 
+// Decode aliases config.Decode.
 var Decode = config.Decode

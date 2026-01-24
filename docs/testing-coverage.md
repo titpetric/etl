@@ -13,11 +13,11 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 
 | Status | Package                                                      | Coverage | Cognitive | Lines |
 | ------ | ------------------------------------------------------------ | -------- | --------- | ----- |
-| ❌      | titpetric/etl/cmd/etl                             | 0.00%    | 7         | 68    |
+| ❌      | titpetric/etl/cmd/etl                             | 0.00%    | 7         | 69    |
 | ❌      | titpetric/etl/drivers                             | 0.00%    | 35        | 249   |
 | ❌      | titpetric/etl/handlers                            | 0.00%    | 106       | 432   |
 | ❌      | titpetric/etl/internal                            | 0.00%    | 25        | 105   |
-| ❌      | titpetric/etl/model                               | 0.00%    | 25        | 102   |
+| ❌      | titpetric/etl/model                               | 0.00%    | 23        | 86    |
 | ✅      | titpetric/etl/server                              | 85.71%   | 1         | 41    |
 | ❌      | titpetric/etl/server/config                       | 60.76%   | 46        | 96    |
 | ✅      | titpetric/etl/server/config/loader                | 89.43%   | 24        | 295   |
@@ -28,7 +28,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 125   |
 | ✅      | titpetric/etl/server/internal/handler/query/model | 71.40%   | 2         | 12    |
 | ✅      | titpetric/etl/server/internal/handler/request     | 81.81%   | 36        | 180   |
-| ❌      | titpetric/etl/server/internal/handler/sql         | 42.99%   | 180       | 731   |
+| ❌      | titpetric/etl/server/internal/handler/sql         | 42.97%   | 180       | 730   |
 | ✅      | titpetric/etl/server/middleware/cache             | 83.27%   | 60        | 312   |
 | ❌      | titpetric/etl/server/middleware/ratelimit         | 77.20%   | 50        | 329   |
 
@@ -77,8 +77,6 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ❌      | titpetric/etl/internal                            | ScanAll                          | 0.00%    | 4         |
 | ❌      | titpetric/etl/internal                            | Statements                       | 0.00%    | 3         |
 | ✅      | titpetric/etl/internal                            | builtins                         | 0.00%    | 0         |
-| ❌      | titpetric/etl/model                               | Config.GetDSN                    | 0.00%    | 1         |
-| ❌      | titpetric/etl/model                               | Config.GetDriver                 | 0.00%    | 1         |
 | ❌      | titpetric/etl/model                               | Config.ParseFlags                | 0.00%    | 1         |
 | ✅      | titpetric/etl/model                               | NewConfig                        | 0.00%    | 0         |
 | ✅      | titpetric/etl/model                               | NewFlagSet                       | 0.00%    | 0         |
@@ -154,7 +152,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server/internal/handler/request     | NewHandler                       | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/internal/handler/request     | init                             | 0.00%    | 0         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Handler                  | 83.80%   | 17        |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.ServeHTTP                | 71.10%   | 20        |
+| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.ServeHTTP                | 70.30%   | 20        |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Type                     | 100.00%  | 0         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.buildCacheKey            | 100.00%  | 2         |
 | ✅      | titpetric/etl/server/internal/handler/sql         | Handler.collectParameters        | 87.50%   | 15        |

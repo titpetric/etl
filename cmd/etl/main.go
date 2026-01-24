@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/go-bridget/mig/db"
 	"github.com/jmoiron/sqlx"
 
 	"github.com/titpetric/etl/model"
@@ -39,14 +40,15 @@ func start(ctx context.Context) error {
 		return err
 	}
 
-	db, err := sqlx.Open(config.GetDriver(), config.GetDSN())
+	driver, dsn := db.ParseDSN(config.DSN)
+	handle, err := sqlx.Open(driver, dsn)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	defer handle.Close()
 
 	command := model.Command{
-		DB:      db,
+		DB:      handle,
 		Name:    args[0],
 		Args:    args[1:],
 		Verbose: config.Verbose,

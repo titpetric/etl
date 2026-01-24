@@ -4,7 +4,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/go-bridget/mig/db"
 	"github.com/spf13/pflag"
 )
 
@@ -44,24 +43,6 @@ func (c *Config) ParseFlags() ([]string, error) {
 	result := flagSet.Args()
 
 	return append(result, u...), nil
-}
-
-func (c *Config) GetDSN() string {
-	if c.DSN == "" {
-		return ":memory:"
-	}
-	dsn := c.DSN
-	// Use mig's DSN cleaning which handles all driver-specific formatting
-	return db.CleanDSN(dsn)
-}
-
-// GetDriver returns the database driver derived from the DSN connection string.
-func (c *Config) GetDriver() string {
-	if c.DSN == "" {
-		return "sqlite"
-	}
-	// Use mig's driver derivation logic
-	return db.DeriveDriverFromDSN(c.DSN)
 }
 
 // filterKnownArgs separates known flags from unknown ones

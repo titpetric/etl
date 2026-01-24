@@ -23,6 +23,8 @@
 //	      driver: http
 //	      url: "http://backend:8080"
 //	```
+//
+// The example is just to illustrate data structure.
 package config
 
 // Config represents the overall configuration structure, which includes a server and multiple endpoints.

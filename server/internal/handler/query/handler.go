@@ -79,8 +79,8 @@ func (h *Handler) Handler(conf *config.Config, endpoint *config.Endpoint) (http.
 }
 
 func (h *Handler) eval(conf *model.Config, queryParams map[string]any) (map[string]any, error) {
-	driver := db.DeriveDriverFromDSN(h.Storage.DSN)
-	dsn := db.CleanDSN(h.Storage.DSN)
+	driver, dsn := db.ParseDSN(h.Storage.DSN)
+
 	sqldb, err := sqlx.Open(driver, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to the database: %w", err)
