@@ -5,11 +5,12 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"maps"
+	"slices"
 	"strings"
 
 	"github.com/go-bridget/mig/db/introspect"
 	"github.com/jmoiron/sqlx"
-	"golang.org/x/exp/maps"
 
 	"github.com/titpetric/etl/internal"
 	"github.com/titpetric/etl/model"
@@ -77,7 +78,7 @@ func (m *MySQL) Insert(table string, records []model.RecordInput, params ...stri
 func (m *MySQL) insertQueryNamed(table string, data model.RecordInput) (sql.Result, error) {
 	template := "INSERT IGNORE INTO %s (%s) VALUES (%s)"
 
-	keys := maps.Keys(data)
+	keys := slices.Collect(maps.Keys(data))
 	names := strings.Join(keys, ",")
 	values := ":" + strings.Join(keys, ", :")
 

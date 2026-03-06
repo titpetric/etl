@@ -4,7 +4,10 @@ include:
 
 services:
   etl:
-    build: .
+    image: titpetric/etl
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     ports:
       - "3000:3000"
     volumes:

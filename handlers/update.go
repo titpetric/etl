@@ -6,10 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"maps"
 	"slices"
 	"strings"
-
-	"golang.org/x/exp/maps"
 
 	"github.com/titpetric/etl/model"
 )
@@ -44,7 +43,7 @@ func UpdateRequest(r io.Reader, args []string) ([]model.Record, error) {
 func buildUpdateQuery(table string, data model.Record, whereKeys []string) (string, []any) {
 	var query = fmt.Sprintf("UPDATE %s SET ", table)
 
-	keys := maps.Keys(data)
+	keys := slices.Collect(maps.Keys(data))
 
 	values := []any{}
 	for _, key := range keys {

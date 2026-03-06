@@ -18,7 +18,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ❌      | titpetric/etl/handlers                            | 0.00%    | 106       | 432   |
 | ❌      | titpetric/etl/internal                            | 0.00%    | 25        | 105   |
 | ❌      | titpetric/etl/model                               | 0.00%    | 23        | 86    |
-| ✅      | titpetric/etl/server                              | 85.71%   | 1         | 41    |
+| ✅      | titpetric/etl/server                              | 85.71%   | 2         | 47    |
 | ❌      | titpetric/etl/server/config                       | 60.76%   | 46        | 96    |
 | ✅      | titpetric/etl/server/config/loader                | 89.43%   | 24        | 295   |
 | ✅      | titpetric/etl/server/internal                     | 100.00%  | 2         | 19    |
@@ -89,7 +89,7 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 | ✅      | titpetric/etl/server                              | Module.Stop                      | 100.00%  | 0         |
 | ✅      | titpetric/etl/server                              | NewConfig                        | 100.00%  | 0         |
 | ✅      | titpetric/etl/server                              | NewModule                        | 100.00%  | 0         |
-| ❌      | titpetric/etl/server                              | Start                            | 0.00%    | 1         |
+| ❌      | titpetric/etl/server                              | Start                            | 0.00%    | 2         |
 | ❌      | titpetric/etl/server/config                       | Config.Validate                  | 0.00%    | 2         |
 | ❌      | titpetric/etl/server/config                       | Decode                           | 62.10%   | 41        |
 | ✅      | titpetric/etl/server/config                       | Handler.Decode                   | 66.70%   | 1         |

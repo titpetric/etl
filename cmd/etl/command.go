@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
-
-	"golang.org/x/exp/maps"
+	"maps"
+	"slices"
 
 	"github.com/titpetric/etl/handlers"
 	"github.com/titpetric/etl/model"
@@ -24,7 +24,7 @@ func HandleCommand(ctx context.Context, command *model.Command, r io.Reader) err
 		"version": handlers.Version,
 		"server":  handlers.Server,
 	}
-	commands := maps.Keys(commandMap)
+	commands := slices.Collect(maps.Keys(commandMap))
 
 	if fn, ok := commandMap[command.Name]; ok {
 		return fn(ctx, command, r)

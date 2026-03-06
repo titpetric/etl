@@ -4,10 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"maps"
+	"slices"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"golang.org/x/exp/maps"
 
 	"github.com/titpetric/etl/internal"
 	"github.com/titpetric/etl/model"
@@ -60,7 +61,7 @@ func (d *Pgx) Insert(table string, records []model.RecordInput, params ...string
 func (d *Pgx) insertQueryNamed(table string, data model.RecordInput) (sql.Result, error) {
 	template := "INSERT INTO %s (%s) VALUES (%s) ON CONFLICT DO NOTHING"
 
-	keys := maps.Keys(data)
+	keys := slices.Collect(maps.Keys(data))
 	names := strings.Join(keys, ",")
 	values := ":" + strings.Join(keys, ", :")
 

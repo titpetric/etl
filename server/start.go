@@ -22,7 +22,13 @@ func Start(ctx context.Context) error {
 	svc := platform.New(opts)
 	svc.Register(NewModule(conf))
 
-	return svc.Start(ctx)
+	if err := svc.Start(ctx); err != nil {
+		return err
+	}
+
+	svc.Wait()
+
+	return nil
 }
 
 // NewConfig will load the config from etl.yml.
