@@ -14,7 +14,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
-	github.com/titpetric/platform v0.4.2
+	github.com/titpetric/platform v0.4.4
 	github.com/titpetric/vuego v0.9.1
 	golang.org/x/time v0.15.0
 	modernc.org/sqlite v1.47.0
