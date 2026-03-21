@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/expr-lang/expr v1.17.8
-	github.com/go-bridget/mig v0.3.8
+	github.com/go-bridget/mig v0.3.9
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/goccy/go-yaml v1.19.2
@@ -14,8 +14,8 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
-	github.com/titpetric/platform v0.4.4
-	github.com/titpetric/vuego v0.9.1
+	github.com/titpetric/platform v0.4.5
+	github.com/titpetric/vuego v0.9.2
 	golang.org/x/time v0.15.0
 	modernc.org/sqlite v1.47.0
 )
@@ -44,7 +44,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/riandyrn/otelchi v0.12.2 // indirect
-	github.com/titpetric/lessgo v0.1.0 // indirect
+	github.com/titpetric/lessgo v0.1.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.42.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.42.0 // indirect
