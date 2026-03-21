@@ -208,15 +208,15 @@ etl server
 
 ## Tips & Tricks
 
-- **Bulk operations**: Use pipes to process multiple records at once
-- **Parameter formatting**: Values support dynamic data via shell expansion: `etl insert users created_at=$(date -I)`
-- **Query files**: Keep `.sql` files database-specific to handle syntax differences
-- **JSON validation**: Pipe through `jq` first to validate JSON before database operations
-- **Dry runs**: Use `--dry` flag if available to preview operations without committing
+- Use pipes to process multiple records at once for bulk operations
+- Values support dynamic data via shell expansion: `etl insert users created_at=$(date -I)`
+- Keep `.sql` files database-specific to handle syntax differences
+- Pipe through `jq` first to validate JSON before database operations
+- Use `--dry` flag if available to preview operations without committing
 
 ## Troubleshooting
 
-- **Connection errors**: Check `ETL_DB_DSN` environment variable
-- **Missing table**: Run schema initialization with `etl query schema.sql`
-- **JSON parse errors**: Validate JSON with `jq` before piping to etl
-- **SQL syntax errors**: Test queries directly in database client first, then move to .sql files
+- Connection errors: Check `ETL_DB_DSN` environment variable
+- Missing table: Run schema initialization with `etl query schema.sql`
+- JSON parse errors: Validate JSON with `jq` before piping to etl
+- SQL syntax errors: Test queries directly in database client first, then move to .sql files

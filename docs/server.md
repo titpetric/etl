@@ -25,7 +25,7 @@ The APIs can be composed with external data sources. If your "user" database
 lives on a different host and isn't accessible locally due to firewall policies,
 using HTTP API calls results in:
 
-- The webdev server/s not needing direct access to database (least privilege)
+- Web servers don't need direct database access (least privilege)
 - Other JSON sources could be consumed, usage of third party APIs.
 
 ![](diagrams/v2/webdev-api.svg)
