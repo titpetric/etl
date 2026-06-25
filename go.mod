@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/expr-lang/expr v1.17.8
-	github.com/go-bridget/mig v0.4.1
+	github.com/go-bridget/mig v0.4.2
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/goccy/go-yaml v1.19.2
