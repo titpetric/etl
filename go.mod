@@ -1,10 +1,10 @@
 module github.com/titpetric/etl
 
-go 1.25.5
+go 1.27.0
 
 require (
 	github.com/expr-lang/expr v1.17.8
-	github.com/go-bridget/mig v0.4.4
+	github.com/go-bridget/mig v0.5.0
 	github.com/go-chi/chi/v5 v5.3.1
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/goccy/go-yaml v1.19.2
@@ -17,7 +17,7 @@ require (
 	github.com/titpetric/platform v0.5.0
 	github.com/titpetric/vuego v0.9.5
 	golang.org/x/time v0.15.0
-	modernc.org/sqlite v1.56.0
+	modernc.org/sqlite v1.57.0
 )
 
 require (
@@ -66,5 +66,5 @@ require (
 	honnef.co/go/tools v0.7.0 // indirect
 	modernc.org/libc v1.75.3 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
-	modernc.org/memory v1.12.0 // indirect
+	modernc.org/memory v1.12.1 // indirect
 )
