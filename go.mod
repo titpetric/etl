@@ -4,7 +4,7 @@ go 1.27.0
 
 require (
 	github.com/expr-lang/expr v1.17.8
-	github.com/go-bridget/mig v0.6.0
+	github.com/go-bridget/mig v0.6.1
 	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/goccy/go-yaml v1.19.2
@@ -14,7 +14,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.12.1
-	github.com/titpetric/platform v0.7.0
+	github.com/titpetric/platform v0.7.1
 	github.com/titpetric/vuego v0.10.1
 	golang.org/x/time v0.15.0
 	modernc.org/sqlite v1.57.0
@@ -45,7 +45,7 @@ require (
 	golang.org/x/tools v0.49.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.8.1 // indirect
-	modernc.org/libc v1.75.4 // indirect
+	modernc.org/libc v1.75.5 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.12.1 // indirect
 )
