@@ -23,7 +23,7 @@ tasks:
       - goimports -w .
       - go mod tidy
       - go fmt ./...
-      - go-fsck lint ./...
+      - splint ./...
 
   cover:
     desc: "Show source coverage"
@@ -40,4 +40,4 @@ tasks:
     desc: "Set up required tooling"
     cmds:
       - go install github.com/gregoryv/uncover/cmd/uncover@latest
-      - go install github.com/titpetric/exp/cmd/go-fsck@latest
+      - go install github.com/titpetric/tools/splint@latest
