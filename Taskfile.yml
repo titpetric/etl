@@ -86,7 +86,8 @@ tasks:
   cover:
     desc: "Generate documentation and coverage reports"
     cmds:
-      - go-fsck extract . --include-sources
+      - splint -include-sources -output splint-doc.json . || true
+      - jq '.Packages' splint-doc.json > go-fsck.json
       - schema-gen extract --include-unexported -i ./server/config/config.go -o config.schema.json --pretty-json
       - schema-gen markdown -i config.schema.json -o docs/config.md --root Config --title "# Configuration"
       - go-fsck extract --pretty-json ./...
