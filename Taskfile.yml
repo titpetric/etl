@@ -86,12 +86,14 @@ tasks:
   cover:
     desc: "Generate documentation and coverage reports"
     cmds:
+      - defer: rm -f splint.json
       - splint -include-sources -save . || true
       - schema-gen extract --include-unexported -i ./server/config/config.go -o config.schema.json --pretty-json
       - schema-gen markdown -i config.schema.json -o docs/config.md --root Config --title "# Configuration"
-      - go-fsck extract --pretty-json ./...
-      - go tool cover -func=pkg.cov | summary coverfunc --json > pkg.cov.json
-      - go-fsck coverage -c pkg.cov.json -o go-fsck.json
-      - go-fsck coverage --template=docs/testing-coverage.md.tpl -v > docs/testing-coverage.md
+      # The extract reads the profile itself, so the coverage is in the
+      # document splint writes rather than folded in by a second pass over a
+      # summary of it. splint exits 1 on a finding, which is not this job.
+      - splint -save --append-coverage=pkg.cov ./... || true
+      - go-fsck coverage -i splint.json --template=docs/testing-coverage.md.tpl -v > docs/testing-coverage.md
       - perl -pi -e 's/github.com\/titpetric/titpetric/g' docs/testing-coverage.md
       - rm -f config.schema.json
