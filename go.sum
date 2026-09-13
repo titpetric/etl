@@ -80,8 +80,8 @@ github.com/stretchr/testify v1.12.1 h1:EuwCh5fleGS7H32xRwO3wRGT7DxrDhLAT6FF8MpWD
 github.com/stretchr/testify v1.12.1/go.mod h1:MDEgiDPPsNp5cuIrHPPCyornHKgEVbtFUmoNlxoYthg=
 github.com/titpetric/lessgo v0.2.0 h1:0o2vcYrwH8U6uB/Ze01ESOs2RTMGGqqS57RTbjAUEgA=
 github.com/titpetric/lessgo v0.2.0/go.mod h1:Xiw6dL/VVi9uxynx9lm5znrsKTcvmnFd8jCAnYRNkS4=
-github.com/titpetric/oida v0.3.0 h1:Fx61ExCF4x6bDvC5mw6TNfzYhmKhoRTL3Nf6e5AHlgQ=
-github.com/titpetric/oida v0.3.0/go.mod h1:ZRPnTkjF/AfRUt0BLeJl3d4JRFg2nUX0YJ7SyKMaNgE=
+github.com/titpetric/oida v0.4.0 h1:h5k2GFqdH7vcWRIsAOB1QXiNO/rpSy9zF5gLAQnSIEA=
+github.com/titpetric/oida v0.4.0/go.mod h1:gjGHS/y41xyl+CICP/JiNBFm4p4HbHqilb/VXPGbZGc=
 github.com/titpetric/platform v0.7.2 h1:j7yzxi01RbnnyHvxkRcbMik3v47v6R0+O8V8kIEm3TQ=
 github.com/titpetric/platform v0.7.2/go.mod h1:uMG8Vac2hzfnWUAROCzMlvKRFt9ieJyHHs9TlI5+HLs=
 github.com/titpetric/vuego v0.10.1 h1:Wd+dMPQhkUoIWJ7yqWIeNQTFIUe1EMMwKdqI4ljxNsY=
