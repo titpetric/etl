@@ -86,8 +86,6 @@ tasks:
   cover:
     desc: "Generate documentation and coverage reports"
     cmds:
-      - schema-gen extract --include-unexported -i ./server/config/config.go -o config.schema.json --pretty-json
-      - schema-gen markdown -i config.schema.json -o docs/config.md --root Config --title "# Configuration"
+      - splint docs --root Config --title "# Configuration" -i ./server/config . > docs/config.md
       - splint coverage --append-coverage=pkg.cov --template=docs/testing-coverage.md.tpl -v ./... > docs/testing-coverage.md
       - perl -pi -e 's/github.com\/titpetric/titpetric/g' docs/testing-coverage.md
-      - rm -f config.schema.json

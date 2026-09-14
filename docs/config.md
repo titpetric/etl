@@ -81,7 +81,7 @@ Queries is a list of queries to execute in sequence (pipeline execution).
 **Field: `Single` (`boolean`)**
 Single returns a single object instead of array (applies to all queries).
 
-**Field: `Parameters` (`map[string]`)**
+**Field: `Parameters` (`any`)**
 Parameters are static parameters merged with request parameters.
 
 **Field: `Transaction` ([Transaction](#transaction))**
