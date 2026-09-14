@@ -40,4 +40,4 @@ tasks:
     desc: "Set up required tooling"
     cmds:
       - go install github.com/gregoryv/uncover/cmd/uncover@latest
-      - go install github.com/titpetric/tools/splint@latest
+      - go install github.com/titpetric/tools/splint@main
