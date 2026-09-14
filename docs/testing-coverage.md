@@ -11,222 +11,222 @@ cover. Tests with cognitive complexity 0 would be covered by invocation.
 
 ## Packages
 
-| Status | Package                                                      | Coverage | Cognitive | Lines |
-| ------ | ------------------------------------------------------------ | -------- | --------- | ----- |
-| ❌      | titpetric/etl/cmd/etl                             | 0.00%    | 7         | 69    |
-| ❌      | titpetric/etl/drivers                             | 0.00%    | 35        | 249   |
-| ❌      | titpetric/etl/handlers                            | 0.00%    | 106       | 432   |
-| ❌      | titpetric/etl/internal                            | 0.00%    | 25        | 105   |
-| ❌      | titpetric/etl/model                               | 0.00%    | 23        | 86    |
-| ✅      | titpetric/etl/server                              | 85.71%   | 2         | 47    |
-| ❌      | titpetric/etl/server/config                       | 60.76%   | 46        | 96    |
-| ✅      | titpetric/etl/server/config/loader                | 89.43%   | 24        | 295   |
-| ✅      | titpetric/etl/server/internal                     | 100.00%  | 2         | 19    |
-| ✅      | titpetric/etl/server/internal/db/order            | 100.00%  | 0         | 14    |
-| ❌      | titpetric/etl/server/internal/handler             | 73.70%   | 12        | 36    |
-| ✅      | titpetric/etl/server/internal/handler/model       | 100.00%  | 2         | 18    |
-| ❌      | titpetric/etl/server/internal/handler/query       | 42.86%   | 32        | 125   |
-| ✅      | titpetric/etl/server/internal/handler/query/model | 71.40%   | 2         | 12    |
-| ✅      | titpetric/etl/server/internal/handler/request     | 81.81%   | 36        | 180   |
-| ❌      | titpetric/etl/server/internal/handler/sql         | 42.97%   | 180       | 730   |
-| ✅      | titpetric/etl/server/middleware/cache             | 83.27%   | 60        | 312   |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | 77.20%   | 50        | 329   |
+| Status | Package                             | Coverage | Cognitive | Lines |
+|--------|-------------------------------------|----------|-----------|-------|
+| ❌    | cmd/etl                             | 0.00%    | 7         | 69    |
+| ❌    | drivers                             | 0.00%    | 35        | 237   |
+| ❌    | handlers                            | 0.00%    | 106       | 431   |
+| ❌    | internal                            | 0.00%    | 25        | 100   |
+| ❌    | model                               | 0.00%    | 23        | 83    |
+| ✅    | server                              | 20.69%   | 2         | 40    |
+| ❌    | server/config                       | 62.50%   | 46        | 88    |
+| ✅    | server/config/loader                | 90.64%   | 24        | 263   |
+| ✅    | server/internal                     | 100.00%  | 2         | 14    |
+| ✅    | server/internal/db/order            | 100.00%  | 0         | 12    |
+| ✅    | server/internal/handler             | 80.77%   | 12        | 35    |
+| ✅    | server/internal/handler/model       | 100.00%  | 2         | 15    |
+| ❌    | server/internal/handler/query       | 3.95%    | 32        | 120   |
+| ✅    | server/internal/handler/query/model | 71.43%   | 2         | 12    |
+| ❌    | server/internal/handler/request     | 76.27%   | 36        | 173   |
+| ❌    | server/internal/handler/sql         | 54.63%   | 180       | 698   |
+| ✅    | server/middleware/cache             | 88.84%   | 60        | 288   |
+| ✅    | server/middleware/ratelimit         | 84.54%   | 50        | 301   |
 
 ## Functions
 
-| Status | Package                                                      | Function                         | Coverage | Cognitive |
-| ------ | ------------------------------------------------------------ | -------------------------------- | -------- | --------- |
-| ❌      | titpetric/etl/cmd/etl                             | HandleCommand                    | 0.00%    | 1         |
-| ❌      | titpetric/etl/cmd/etl                             | getInput                         | 0.00%    | 2         |
-| ❌      | titpetric/etl/cmd/etl                             | main                             | 0.00%    | 1         |
-| ❌      | titpetric/etl/cmd/etl                             | start                            | 0.00%    | 3         |
-| ❌      | titpetric/etl/drivers                             | MySQL.Insert                     | 0.00%    | 6         |
-| ❌      | titpetric/etl/drivers                             | MySQL.Query                      | 0.00%    | 2         |
-| ❌      | titpetric/etl/drivers                             | MySQL.Tables                     | 0.00%    | 3         |
-| ✅      | titpetric/etl/drivers                             | MySQL.insertQueryNamed           | 0.00%    | 0         |
-| ❌      | titpetric/etl/drivers                             | New                              | 0.00%    | 1         |
-| ✅      | titpetric/etl/drivers                             | NewMySQL                         | 0.00%    | 0         |
-| ✅      | titpetric/etl/drivers                             | NewPgx                           | 0.00%    | 0         |
-| ✅      | titpetric/etl/drivers                             | NewSqlite                        | 0.00%    | 0         |
-| ❌      | titpetric/etl/drivers                             | Pgx.Insert                       | 0.00%    | 6         |
-| ❌      | titpetric/etl/drivers                             | Pgx.Query                        | 0.00%    | 2         |
-| ✅      | titpetric/etl/drivers                             | Pgx.Tables                       | 0.00%    | 0         |
-| ✅      | titpetric/etl/drivers                             | Pgx.insertQueryNamed             | 0.00%    | 0         |
-| ❌      | titpetric/etl/drivers                             | Sqlite.Insert                    | 0.00%    | 8         |
-| ❌      | titpetric/etl/drivers                             | Sqlite.Query                     | 0.00%    | 5         |
-| ✅      | titpetric/etl/drivers                             | Sqlite.Tables                    | 0.00%    | 0         |
-| ❌      | titpetric/etl/drivers                             | Sqlite.insertQueryNamed          | 0.00%    | 2         |
-| ❌      | titpetric/etl/handlers                            | Get                              | 0.00%    | 19        |
-| ❌      | titpetric/etl/handlers                            | Insert                           | 0.00%    | 2         |
-| ❌      | titpetric/etl/handlers                            | List                             | 0.00%    | 11        |
-| ❌      | titpetric/etl/handlers                            | Query                            | 0.00%    | 12        |
-| ✅      | titpetric/etl/handlers                            | Server                           | 0.00%    | 0         |
-| ❌      | titpetric/etl/handlers                            | Tables                           | 0.00%    | 2         |
-| ❌      | titpetric/etl/handlers                            | Update                           | 0.00%    | 24        |
-| ❌      | titpetric/etl/handlers                            | UpdateRequest                    | 0.00%    | 7         |
-| ❌      | titpetric/etl/handlers                            | Version                          | 0.00%    | 4         |
-| ❌      | titpetric/etl/handlers                            | buildInsertQuery                 | 0.00%    | 3         |
-| ❌      | titpetric/etl/handlers                            | buildUpdateQuery                 | 0.00%    | 8         |
-| ✅      | titpetric/etl/handlers                            | csv                              | 0.00%    | 0         |
-| ❌      | titpetric/etl/handlers                            | decodeQueryParameters            | 0.00%    | 10        |
-| ❌      | titpetric/etl/handlers                            | scanAllRecords                   | 0.00%    | 3         |
-| ❌      | titpetric/etl/handlers                            | scanRecord                       | 0.00%    | 1         |
-| ❌      | titpetric/etl/internal                            | DecodeQuery                      | 0.00%    | 10        |
-| ❌      | titpetric/etl/internal                            | DecodeRecords                    | 0.00%    | 7         |
-| ❌      | titpetric/etl/internal                            | Scan                             | 0.00%    | 1         |
-| ❌      | titpetric/etl/internal                            | ScanAll                          | 0.00%    | 4         |
-| ❌      | titpetric/etl/internal                            | Statements                       | 0.00%    | 3         |
-| ✅      | titpetric/etl/internal                            | builtins                         | 0.00%    | 0         |
-| ❌      | titpetric/etl/model                               | Config.ParseFlags                | 0.00%    | 1         |
-| ✅      | titpetric/etl/model                               | NewConfig                        | 0.00%    | 0         |
-| ✅      | titpetric/etl/model                               | NewFlagSet                       | 0.00%    | 0         |
-| ❌      | titpetric/etl/model                               | RecordInput.Record               | 0.00%    | 1         |
-| ❌      | titpetric/etl/model                               | dbValue                          | 0.00%    | 2         |
-| ❌      | titpetric/etl/model                               | filterKnownArgs                  | 0.00%    | 19        |
-| ✅      | titpetric/etl/server                              | Module.Mount                     | 100.00%  | 0         |
-| ✅      | titpetric/etl/server                              | Module.Name                      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server                              | Module.Start                     | 100.00%  | 0         |
-| ✅      | titpetric/etl/server                              | Module.Stop                      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server                              | NewConfig                        | 100.00%  | 0         |
-| ✅      | titpetric/etl/server                              | NewModule                        | 100.00%  | 0         |
-| ❌      | titpetric/etl/server                              | Start                            | 0.00%    | 2         |
-| ❌      | titpetric/etl/server/config                       | Config.Validate                  | 0.00%    | 2         |
-| ❌      | titpetric/etl/server/config                       | Decode                           | 62.10%   | 41        |
-| ✅      | titpetric/etl/server/config                       | Handler.Decode                   | 66.70%   | 1         |
-| ✅      | titpetric/etl/server/config                       | Handler.UnmarshalYAML            | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config                       | applyStorageEnvOverrides         | 75.00%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.Get            | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.String         | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.loadAndSet     | 66.70%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheCloneManager.set            | 85.70%   | 1         |
-| ✅      | titpetric/etl/server/config/loader                | CacheExpiryManager.Get           | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheExpiryManager.String        | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheExpiryManager.loadAndSet    | 66.70%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheExpiryManager.set           | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheForeverManager.Get          | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/config/loader                | CacheForeverManager.String       | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheForeverManager.loadAndSet   | 66.70%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheForeverManager.set          | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheModifiedManager.Get         | 81.80%   | 5         |
-| ✅      | titpetric/etl/server/config/loader                | CacheModifiedManager.String      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheModifiedManager.loadAndSet  | 66.70%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheModifiedManager.set         | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheNone.Get                    | 75.00%   | 1         |
-| ✅      | titpetric/etl/server/config/loader                | CacheNone.String                 | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheNone.set                    | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheSharedManager.Get           | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/config/loader                | CacheSharedManager.String        | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | CacheSharedManager.loadAndSet    | 66.70%   | 2         |
-| ✅      | titpetric/etl/server/config/loader                | CacheSharedManager.set           | 85.70%   | 1         |
-| ✅      | titpetric/etl/server/config/loader                | Load                             | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/config/loader                | Loader.Load                      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | New                              | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheCloneManager             | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheExpiryManager            | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheForeverManager           | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheModifiedManager          | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheNone                     | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/config/loader                | NewCacheSharedManager            | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal                     | Marshal                          | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/internal                     | MarshalIndent                    | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/internal/db/order            | Asc                              | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/db/order            | Desc                             | 100.00%  | 0         |
-| ❌      | titpetric/etl/server/internal/handler             | Mount                            | 73.70%   | 12        |
-| ✅      | titpetric/etl/server/internal/handler/model       | DBValue                          | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/internal/handler/model       | Handlers                         | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/handler/model       | Register                         | 100.00%  | 0         |
-| ❌      | titpetric/etl/server/internal/handler/query       | Handler.Handler                  | 0.00%    | 2         |
-| ❌      | titpetric/etl/server/internal/handler/query       | Handler.ServeHTTP                | 0.00%    | 3         |
-| ✅      | titpetric/etl/server/internal/handler/query       | Handler.Type                     | 100.00%  | 0         |
-| ❌      | titpetric/etl/server/internal/handler/query       | Handler.eval                     | 0.00%    | 12        |
-| ❌      | titpetric/etl/server/internal/handler/query       | Handler.prepareQueryParams       | 0.00%    | 15        |
-| ✅      | titpetric/etl/server/internal/handler/query       | NewHandler                       | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/handler/query       | init                             | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/query/model | Load                             | 71.40%   | 2         |
-| ✅      | titpetric/etl/server/internal/handler/request     | Handler.EvaluateRequest          | 83.30%   | 14        |
-| ✅      | titpetric/etl/server/internal/handler/request     | Handler.Handler                  | 81.20%   | 3         |
-| ❌      | titpetric/etl/server/internal/handler/request     | Handler.ServeHTTP                | 50.00%   | 12        |
-| ✅      | titpetric/etl/server/internal/handler/request     | Handler.Type                     | 100.00%  | 0         |
-| ❌      | titpetric/etl/server/internal/handler/request     | Handler.buildUpstreamPath        | 60.00%   | 6         |
-| ✅      | titpetric/etl/server/internal/handler/request     | Handler.renderTemplateResponse   | 80.00%   | 1         |
-| ✅      | titpetric/etl/server/internal/handler/request     | NewHandler                       | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/handler/request     | init                             | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Handler                  | 83.80%   | 17        |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.ServeHTTP                | 70.30%   | 20        |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.Type                     | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.buildCacheKey            | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.collectParameters        | 87.50%   | 15        |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.evaluateCondition        | 0.00%    | 3         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.executeLoop              | 0.00%    | 13        |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.executePipeline          | 65.00%   | 32        |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.executeQuery             | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.executeQueryDirect       | 88.90%   | 9         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.executeQueryTx           | 77.80%   | 9         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.executeWithTransaction   | 48.00%   | 15        |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.getFromCache             | 100.00%  | 2         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.renderTemplateResponse   | 0.00%    | 8         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.setAtPath                | 0.00%    | 6         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.setAtPathWithIndex       | 0.00%    | 9         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.setInCache               | 100.00%  | 4         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.setRateLimitHeaders      | 66.70%   | 4         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | Handler.setResponseHeaders       | 30.00%   | 8         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | Handler.shouldUseTransaction     | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | NewHandler                       | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | init                             | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | newTemplateFS                    | 0.00%    | 0         |
-| ❌      | titpetric/etl/server/internal/handler/sql         | templateFS.Open                  | 0.00%    | 1         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFile.Close               | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFile.Read                | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFile.Stat                | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.IsDir           | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.ModTime         | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.Mode            | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.Name            | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.Size            | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/internal/handler/sql         | templateFileInfo.Sys             | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | CustomKeyBuilder.BuildKey        | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.BuildKey       | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.WithHeaders    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.WithPattern    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.WithQuery      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.extractHeaders | 100.00%  | 3         |
-| ✅      | titpetric/etl/server/middleware/cache             | DefaultKeyBuilder.extractQuery   | 100.00%  | 12        |
-| ❌      | titpetric/etl/server/middleware/cache             | MemoryStore.CleanupExpired       | 0.00%    | 4         |
-| ✅      | titpetric/etl/server/middleware/cache             | MemoryStore.Clear                | 83.30%   | 1         |
-| ✅      | titpetric/etl/server/middleware/cache             | MemoryStore.Delete               | 83.30%   | 1         |
-| ✅      | titpetric/etl/server/middleware/cache             | MemoryStore.Get                  | 90.00%   | 3         |
-| ✅      | titpetric/etl/server/middleware/cache             | MemoryStore.Set                  | 100.00%  | 2         |
-| ❌      | titpetric/etl/server/middleware/cache             | Middleware.CleanupExpired        | 0.00%    | 1         |
-| ✅      | titpetric/etl/server/middleware/cache             | Middleware.WithEnabled           | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | Middleware.WithLogger            | 0.00%    | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | Middleware.WithTTL               | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | Middleware.Wrap                  | 92.10%   | 31        |
-| ✅      | titpetric/etl/server/middleware/cache             | NewCustomKeyBuilder              | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | NewDefaultKeyBuilder             | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | NewMemoryStore                   | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/cache             | NewMiddleware                    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | CustomKeyBuilder.BuildKey        | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.BuildKey       | 100.00%  | 2         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.WithHeaders    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.WithPattern    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.WithQuery      | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.extractHeaders | 100.00%  | 3         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.extractQuery   | 100.00%  | 12        |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | DefaultKeyBuilder.getClientIP    | 100.00%  | 5         |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | MemoryStore.CleanupExpired       | 0.00%    | 4         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | MemoryStore.Clear                | 100.00%  | 1         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | MemoryStore.Inc                  | 84.60%   | 3         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | MemoryStore.Rate                 | 90.00%   | 3         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | MemoryStore.Reset                | 100.00%  | 1         |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | Middleware.CleanupExpired        | 0.00%    | 1         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | Middleware.WithEnabled           | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | Middleware.WithLogger            | 0.00%    | 0         |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | Middleware.Wrap                  | 78.30%   | 12        |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | NewCustomKeyBuilder              | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | NewDefaultKeyBuilder             | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | NewMemoryStore                   | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | NewMiddleware                    | 100.00%  | 0         |
-| ✅      | titpetric/etl/server/middleware/ratelimit         | max                              | 100.00%  | 1         |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | responseWrapper.Flush            | 0.00%    | 1         |
-| ❌      | titpetric/etl/server/middleware/ratelimit         | responseWrapper.Hijack           | 0.00%    | 1         |
+| Status | Package                             | Function                         | Coverage | Cognitive |
+|--------|-------------------------------------|----------------------------------|----------|-----------|
+| ❌    | cmd/etl                             | HandleCommand                    | 0.00%    | 1         |
+| ❌    |                                     | getInput                         | 0.00%    | 2         |
+| ❌    |                                     | main                             | 0.00%    | 1         |
+| ❌    |                                     | start                            | 0.00%    | 3         |
+| ❌    | drivers                             | MySQL.Insert                     | 0.00%    | 6         |
+| ❌    |                                     | MySQL.Query                      | 0.00%    | 2         |
+| ❌    |                                     | MySQL.Tables                     | 0.00%    | 3         |
+| ✅    |                                     | MySQL.insertQueryNamed           | 0.00%    | 0         |
+| ❌    |                                     | New                              | 0.00%    | 1         |
+| ✅    |                                     | NewMySQL                         | 0.00%    | 0         |
+| ✅    |                                     | NewPgx                           | 0.00%    | 0         |
+| ✅    |                                     | NewSqlite                        | 0.00%    | 0         |
+| ❌    |                                     | Pgx.Insert                       | 0.00%    | 6         |
+| ❌    |                                     | Pgx.Query                        | 0.00%    | 2         |
+| ✅    |                                     | Pgx.Tables                       | 0.00%    | 0         |
+| ✅    |                                     | Pgx.insertQueryNamed             | 0.00%    | 0         |
+| ❌    |                                     | Sqlite.Insert                    | 0.00%    | 8         |
+| ❌    |                                     | Sqlite.Query                     | 0.00%    | 5         |
+| ✅    |                                     | Sqlite.Tables                    | 0.00%    | 0         |
+| ❌    |                                     | Sqlite.insertQueryNamed          | 0.00%    | 2         |
+| ❌    | handlers                            | Get                              | 0.00%    | 19        |
+| ❌    |                                     | Insert                           | 0.00%    | 2         |
+| ❌    |                                     | List                             | 0.00%    | 11        |
+| ❌    |                                     | Query                            | 0.00%    | 12        |
+| ✅    |                                     | Server                           | 0.00%    | 0         |
+| ❌    |                                     | Tables                           | 0.00%    | 2         |
+| ❌    |                                     | Update                           | 0.00%    | 24        |
+| ❌    |                                     | UpdateRequest                    | 0.00%    | 7         |
+| ❌    |                                     | Version                          | 0.00%    | 4         |
+| ❌    |                                     | buildInsertQuery                 | 0.00%    | 3         |
+| ❌    |                                     | buildUpdateQuery                 | 0.00%    | 8         |
+| ✅    |                                     | csv                              | 0.00%    | 0         |
+| ❌    |                                     | decodeQueryParameters            | 0.00%    | 10        |
+| ❌    |                                     | scanAllRecords                   | 0.00%    | 3         |
+| ❌    |                                     | scanRecord                       | 0.00%    | 1         |
+| ❌    | internal                            | DecodeQuery                      | 0.00%    | 10        |
+| ❌    |                                     | DecodeRecords                    | 0.00%    | 7         |
+| ❌    |                                     | Scan                             | 0.00%    | 1         |
+| ❌    |                                     | ScanAll                          | 0.00%    | 4         |
+| ❌    |                                     | Statements                       | 0.00%    | 3         |
+| ✅    |                                     | builtins                         | 0.00%    | 0         |
+| ❌    | model                               | Config.ParseFlags                | 0.00%    | 1         |
+| ✅    |                                     | NewConfig                        | 0.00%    | 0         |
+| ✅    |                                     | NewFlagSet                       | 0.00%    | 0         |
+| ❌    |                                     | RecordInput.Record               | 0.00%    | 1         |
+| ❌    |                                     | dbValue                          | 0.00%    | 2         |
+| ❌    |                                     | filterKnownArgs                  | 0.00%    | 19        |
+| ✅    | server                              | Module.Mount                     | 100.00%  | 0         |
+| ✅    |                                     | Module.Name                      | 100.00%  | 0         |
+| ✅    |                                     | Module.Start                     | 100.00%  | 0         |
+| ✅    |                                     | Module.Stop                      | 100.00%  | 0         |
+| ✅    |                                     | NewConfig                        | 100.00%  | 0         |
+| ✅    |                                     | NewModule                        | 100.00%  | 0         |
+| ❌    |                                     | Start                            | 0.00%    | 2         |
+| ❌    | server/config                       | Config.Validate                  | 0.00%    | 2         |
+| ❌    |                                     | Decode                           | 66.67%   | 41        |
+| ✅    |                                     | Handler.Decode                   | 66.67%   | 1         |
+| ✅    |                                     | Handler.UnmarshalYAML            | 100.00%  | 0         |
+| ✅    |                                     | applyStorageEnvOverrides         | 75.00%   | 2         |
+| ✅    | server/config/loader                | CacheCloneManager.Get            | 100.00%  | 1         |
+| ✅    |                                     | CacheCloneManager.String         | 100.00%  | 0         |
+| ✅    |                                     | CacheCloneManager.loadAndSet     | 66.67%   | 2         |
+| ✅    |                                     | CacheCloneManager.set            | 90.91%   | 1         |
+| ✅    |                                     | CacheExpiryManager.Get           | 100.00%  | 2         |
+| ✅    |                                     | CacheExpiryManager.String        | 100.00%  | 0         |
+| ✅    |                                     | CacheExpiryManager.loadAndSet    | 66.67%   | 2         |
+| ✅    |                                     | CacheExpiryManager.set           | 100.00%  | 0         |
+| ✅    |                                     | CacheForeverManager.Get          | 100.00%  | 1         |
+| ✅    |                                     | CacheForeverManager.String       | 100.00%  | 0         |
+| ✅    |                                     | CacheForeverManager.loadAndSet   | 66.67%   | 2         |
+| ✅    |                                     | CacheForeverManager.set          | 100.00%  | 0         |
+| ✅    |                                     | CacheModifiedManager.Get         | 86.67%   | 5         |
+| ✅    |                                     | CacheModifiedManager.String      | 100.00%  | 0         |
+| ✅    |                                     | CacheModifiedManager.loadAndSet  | 66.67%   | 2         |
+| ✅    |                                     | CacheModifiedManager.set         | 100.00%  | 0         |
+| ✅    |                                     | CacheNone.Get                    | 75.00%   | 1         |
+| ✅    |                                     | CacheNone.String                 | 100.00%  | 0         |
+| ✅    |                                     | CacheNone.set                    | 0.00%    | 0         |
+| ✅    |                                     | CacheSharedManager.Get           | 100.00%  | 1         |
+| ✅    |                                     | CacheSharedManager.String        | 100.00%  | 0         |
+| ✅    |                                     | CacheSharedManager.loadAndSet    | 66.67%   | 2         |
+| ✅    |                                     | CacheSharedManager.set           | 90.91%   | 1         |
+| ✅    |                                     | Load                             | 100.00%  | 1         |
+| ✅    |                                     | Loader.Load                      | 100.00%  | 0         |
+| ✅    |                                     | New                              | 100.00%  | 0         |
+| ✅    |                                     | NewCacheCloneManager             | 100.00%  | 0         |
+| ✅    |                                     | NewCacheExpiryManager            | 100.00%  | 0         |
+| ✅    |                                     | NewCacheForeverManager           | 100.00%  | 0         |
+| ✅    |                                     | NewCacheModifiedManager          | 100.00%  | 0         |
+| ✅    |                                     | NewCacheNone                     | 100.00%  | 0         |
+| ✅    |                                     | NewCacheSharedManager            | 100.00%  | 0         |
+| ✅    | server/internal                     | Marshal                          | 100.00%  | 1         |
+| ✅    |                                     | MarshalIndent                    | 100.00%  | 1         |
+| ✅    | server/internal/db/order            | Asc                              | 100.00%  | 0         |
+| ✅    |                                     | Desc                             | 100.00%  | 0         |
+| ✅    | server/internal/handler             | Mount                            | 80.77%   | 12        |
+| ✅    | server/internal/handler/model       | DBValue                          | 100.00%  | 2         |
+| ✅    |                                     | Handlers                         | 100.00%  | 0         |
+| ✅    |                                     | Register                         | 100.00%  | 0         |
+| ❌    | server/internal/handler/query       | Handler.Handler                  | 0.00%    | 2         |
+| ❌    |                                     | Handler.ServeHTTP                | 0.00%    | 3         |
+| ✅    |                                     | Handler.Type                     | 100.00%  | 0         |
+| ❌    |                                     | Handler.eval                     | 0.00%    | 12        |
+| ❌    |                                     | Handler.prepareQueryParams       | 0.00%    | 15        |
+| ✅    |                                     | NewHandler                       | 100.00%  | 0         |
+| ✅    |                                     | init                             | 100.00%  | 0         |
+| ✅    | server/internal/handler/query/model | Load                             | 71.43%   | 2         |
+| ✅    | server/internal/handler/request     | Handler.EvaluateRequest          | 89.13%   | 14        |
+| ✅    |                                     | Handler.Handler                  | 86.96%   | 3         |
+| ❌    |                                     | Handler.ServeHTTP                | 50.00%   | 12        |
+| ✅    |                                     | Handler.Type                     | 100.00%  | 0         |
+| ❌    |                                     | Handler.buildUpstreamPath        | 60.00%   | 6         |
+| ✅    |                                     | Handler.renderTemplateResponse   | 80.00%   | 1         |
+| ✅    |                                     | NewHandler                       | 100.00%  | 0         |
+| ✅    |                                     | init                             | 100.00%  | 0         |
+| ✅    | server/internal/handler/sql         | Handler.Handler                  | 88.24%   | 17        |
+| ❌    |                                     | Handler.ServeHTTP                | 76.60%   | 20        |
+| ✅    |                                     | Handler.Type                     | 100.00%  | 0         |
+| ✅    |                                     | Handler.buildCacheKey            | 100.00%  | 2         |
+| ✅    |                                     | Handler.collectParameters        | 88.89%   | 15        |
+| ❌    |                                     | Handler.evaluateCondition        | 0.00%    | 3         |
+| ❌    |                                     | Handler.executeLoop              | 0.00%    | 13        |
+| ❌    |                                     | Handler.executePipeline          | 69.57%   | 32        |
+| ✅    |                                     | Handler.executeQuery             | 100.00%  | 2         |
+| ✅    |                                     | Handler.executeQueryDirect       | 90.48%   | 9         |
+| ✅    |                                     | Handler.executeQueryTx           | 80.95%   | 9         |
+| ❌    |                                     | Handler.executeWithTransaction   | 48.00%   | 15        |
+| ✅    |                                     | Handler.getFromCache             | 100.00%  | 2         |
+| ❌    |                                     | Handler.renderTemplateResponse   | 0.00%    | 8         |
+| ❌    |                                     | Handler.setAtPath                | 0.00%    | 6         |
+| ❌    |                                     | Handler.setAtPathWithIndex       | 0.00%    | 9         |
+| ✅    |                                     | Handler.setInCache               | 100.00%  | 4         |
+| ✅    |                                     | Handler.setRateLimitHeaders      | 66.67%   | 4         |
+| ❌    |                                     | Handler.setResponseHeaders       | 30.00%   | 8         |
+| ✅    |                                     | Handler.shouldUseTransaction     | 100.00%  | 1         |
+| ✅    |                                     | NewHandler                       | 100.00%  | 0         |
+| ✅    |                                     | init                             | 100.00%  | 0         |
+| ✅    |                                     | newTemplateFS                    | 0.00%    | 0         |
+| ❌    |                                     | templateFS.Open                  | 0.00%    | 1         |
+| ✅    |                                     | templateFile.Close               | 0.00%    | 0         |
+| ✅    |                                     | templateFile.Read                | 0.00%    | 0         |
+| ✅    |                                     | templateFile.Stat                | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.IsDir           | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.ModTime         | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.Mode            | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.Name            | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.Size            | 0.00%    | 0         |
+| ✅    |                                     | templateFileInfo.Sys             | 0.00%    | 0         |
+| ✅    | server/middleware/cache             | CustomKeyBuilder.BuildKey        | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.BuildKey       | 100.00%  | 2         |
+| ✅    |                                     | DefaultKeyBuilder.WithHeaders    | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.WithPattern    | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.WithQuery      | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.extractHeaders | 100.00%  | 3         |
+| ✅    |                                     | DefaultKeyBuilder.extractQuery   | 100.00%  | 12        |
+| ❌    |                                     | MemoryStore.CleanupExpired       | 0.00%    | 4         |
+| ✅    |                                     | MemoryStore.Clear                | 90.00%   | 1         |
+| ✅    |                                     | MemoryStore.Delete               | 90.00%   | 1         |
+| ✅    |                                     | MemoryStore.Get                  | 92.86%   | 3         |
+| ✅    |                                     | MemoryStore.Set                  | 100.00%  | 2         |
+| ❌    |                                     | Middleware.CleanupExpired        | 0.00%    | 1         |
+| ✅    |                                     | Middleware.WithEnabled           | 100.00%  | 0         |
+| ✅    |                                     | Middleware.WithLogger            | 0.00%    | 0         |
+| ✅    |                                     | Middleware.WithTTL               | 100.00%  | 0         |
+| ✅    |                                     | Middleware.Wrap                  | 95.83%   | 31        |
+| ✅    |                                     | NewCustomKeyBuilder              | 100.00%  | 0         |
+| ✅    |                                     | NewDefaultKeyBuilder             | 100.00%  | 0         |
+| ✅    |                                     | NewMemoryStore                   | 100.00%  | 0         |
+| ✅    |                                     | NewMiddleware                    | 100.00%  | 0         |
+| ✅    | server/middleware/ratelimit         | CustomKeyBuilder.BuildKey        | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.BuildKey       | 100.00%  | 2         |
+| ✅    |                                     | DefaultKeyBuilder.WithHeaders    | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.WithPattern    | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.WithQuery      | 100.00%  | 0         |
+| ✅    |                                     | DefaultKeyBuilder.extractHeaders | 100.00%  | 3         |
+| ✅    |                                     | DefaultKeyBuilder.extractQuery   | 100.00%  | 12        |
+| ✅    |                                     | DefaultKeyBuilder.getClientIP    | 100.00%  | 5         |
+| ❌    |                                     | MemoryStore.CleanupExpired       | 0.00%    | 4         |
+| ✅    |                                     | MemoryStore.Clear                | 100.00%  | 1         |
+| ✅    |                                     | MemoryStore.Inc                  | 89.47%   | 3         |
+| ✅    |                                     | MemoryStore.Rate                 | 92.86%   | 3         |
+| ✅    |                                     | MemoryStore.Reset                | 100.00%  | 1         |
+| ❌    |                                     | Middleware.CleanupExpired        | 0.00%    | 1         |
+| ✅    |                                     | Middleware.WithEnabled           | 100.00%  | 0         |
+| ✅    |                                     | Middleware.WithLogger            | 0.00%    | 0         |
+| ✅    |                                     | Middleware.Wrap                  | 86.49%   | 12        |
+| ✅    |                                     | NewCustomKeyBuilder              | 100.00%  | 0         |
+| ✅    |                                     | NewDefaultKeyBuilder             | 100.00%  | 0         |
+| ✅    |                                     | NewMemoryStore                   | 100.00%  | 0         |
+| ✅    |                                     | NewMiddleware                    | 100.00%  | 0         |
+| ✅    |                                     | max                              | 100.00%  | 1         |
+| ❌    |                                     | responseWrapper.Flush            | 0.00%    | 1         |
+| ❌    |                                     | responseWrapper.Hijack           | 0.00%    | 1         |
 
